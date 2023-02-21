@@ -1,3 +1,6 @@
+import { pool } from "../db.js"
+
+
 export const getCitas = (req, res)=>{
     res.send('obteniendo citas')
 }
@@ -7,6 +10,7 @@ export const getCita = (req, res)=>{
 }
 
 export const createCita = (req, res)=>{
+    
     res.send('creando citas')
 }
 
