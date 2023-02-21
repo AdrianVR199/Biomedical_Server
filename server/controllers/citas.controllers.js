@@ -1,11 +1,16 @@
 import { pool } from "../db.js";
 
-export const getCitas = (req, res) => {
-  res.send("obteniendo citas");
+export const getCitas = async (req, res) => {
+  const [result] = await pool.query(
+    "SELECT * FROM citas ORDER BY hora_reg ASC"
+  );
+  res.json(result);
 };
 
-export const getCita = (req, res) => {
-  res.send("obteniendo una cita");
+export const getCita = async (req, res) => {
+  //console.log(req)
+  const [result] = await pool.query("SELECT * FROM citas WHERE BIN_TO_UUID(cita_id)=?", [req.params.id,]);
+  res.json(result[0]);
 };
 
 export const createCita = async (req, res) => {
