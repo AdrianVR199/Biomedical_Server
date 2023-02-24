@@ -1,4 +1,4 @@
-import { pool } from "../db.js";
+import pool from "../db.js";
 
 export const getHistoriales = async (req, res) => {
   const [result] = await pool.query(
@@ -17,10 +17,10 @@ export const getHistorial = async (req, res) => {
 };
 export const createHistorial = async (req, res) => {
   const { descripcion, id_paciente, id_doctor } = req.body;
-  const result = await pool.query(
-    "INSERT INTO historiales_clinicos(descripcion,id_paciente,id_doctor) VALUES(?,?,?)",
-    [descripcion, id_paciente, id_doctor]
-  );
+  const newLink = { descripcion, id_paciente, id_doctor };
+  const result = await pool.query("INSERT INTO historiales_clinicos set ?", [
+    newLink,
+  ]);
   console.log(result);
   res.send("creando historial");
 };

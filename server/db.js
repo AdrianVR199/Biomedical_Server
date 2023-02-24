@@ -1,9 +1,6 @@
 import { createPool } from "mysql2/promise";
+import { db } from "./keys.js";
 
-export const pool = createPool({
-  host: "localhost",
-  port: 3306,
-  user: "root",
-  password: "Amburgesa1",
-  database: "biomedical_group_app",
-});
+const pool = createPool(db.database);
+
+export default pool;

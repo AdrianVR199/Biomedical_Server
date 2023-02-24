@@ -1,4 +1,4 @@
-import { pool } from "../db.js";
+import pool from "../db.js";
 
 export const getCitas = async (req, res) => {
   const [result] = await pool.query(
@@ -26,20 +26,24 @@ export const createCita = async (req, res) => {
     id_paciente,
     id_doctor,
   } = req.body;
-  const result = await pool.query(
-    "INSERT INTO citas(tipo_cita,motivo_consulta,estado_asistencia,id_paciente,id_doctor) VALUES(?,?,?,?,?)",
-    [tipo_cita, motivo_consulta, estado_asistencia, id_paciente, id_doctor]
-  );
+  const newLink = {
+    tipo_cita,
+    motivo_consulta,
+    estado_asistencia,
+    id_paciente,
+    id_doctor,
+  };
+  const result = await pool.query("INSERT INTO citas set ?", [newLink]);
   console.log(result);
   res.send("creando citas");
 };
 
 export const updateCita = async (req, res) => {
-  const result = await pool.query("UPDATE citas SET ? WHERE BIN_TO_UUID(cita_id) = ?",[
-    req.body,
-    req.params.id,
-]);
-res.json(result);
+  const result = await pool.query(
+    "UPDATE citas SET ? WHERE BIN_TO_UUID(cita_id) = ?",
+    [req.body, req.params.id]
+  );
+  res.json(result);
 };
 
 export const deleteCita = async (req, res) => {
@@ -47,8 +51,9 @@ export const deleteCita = async (req, res) => {
     "DELETE FROM citas WHERE BIN_TO_UUID(cita_id)=?",
     [req.params.id]
   );
-  if (result.affectedRows === 0){
-    return res.status(404).json({ message: "cita no encontrada" });}
-    else{
-  return res.sendStatus(204);}
+  if (result.affectedRows === 0) {
+    return res.status(404).json({ message: "cita no encontrada" });
+  } else {
+    return res.sendStatus(204);
+  }
 };
