@@ -6,16 +6,17 @@ import {
   deleteHistorial,
   updateHistorial,
 } from "../controllers/historial.controllers.js";
+import {auth} from '../lib/auth.js'
 const router = Router();
 
-router.get("/historiales", getHistoriales);
+router.get("/historiales",auth.isLoggedIn, getHistoriales);
 
-router.get("/historiales/:id", getHistorial);
+router.get("/historiales/:id",auth.isLoggedIn, getHistorial);
 
-router.post("/historiales", createHistorial);
+router.post("/historiales",auth.isLoggedIn, createHistorial);
 
-router.put("/historiales/:id", updateHistorial);
+router.put("/historiales/:id",auth.isLoggedIn, updateHistorial);
 
-router.delete("/historiales/:id", deleteHistorial);
+router.delete("/historiales/:id",auth.isLoggedIn, deleteHistorial);
 
 export default router;

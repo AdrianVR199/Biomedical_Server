@@ -5,17 +5,24 @@ import {
   createCita,
   deleteCita,
   updateCita,
+  getCitasC,
+  getHorasCitas
 } from "../controllers/citas.controllers.js";
+import {auth} from '../lib/auth.js'
 const router = Router();
 
-router.get("/citas", getCitas);
+router.get("/citas",auth.isLoggedIn, getCitas);
 
-router.get("/citas/:id", getCita);
+router.get("/citascompletas",auth.isLoggedIn, getCitasC);
 
-router.post("/citas", createCita);
+router.get("/citas/:id",auth.isLoggedIn, getCita);
 
-router.put("/citas/:id", updateCita);
+router.post("/horarios",auth.isLoggedIn, getHorasCitas);
 
-router.delete("/citas/:id", deleteCita);
+router.post("/citas",auth.isLoggedIn, createCita);
+
+router.put("/citas/:id",auth.isLoggedIn, updateCita);
+
+router.delete("/citas/:id",auth.isLoggedIn, deleteCita);
 
 export default router;
