@@ -42,9 +42,6 @@ export const updateHistorial = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
-
-
-
 export const getHistoriales = async (req, res) => {
   try {
     const idSesion = fromBinaryUUID(req.user.usuario_id);

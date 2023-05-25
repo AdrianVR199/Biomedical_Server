@@ -10,6 +10,7 @@ import {
   MenuItem,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { subDays } from 'date-fns';
 import "../styles/FormAgenC.css";
 import Popup from "../Componentes/Popup";
 import { useAppContext } from "../context/ContextProvider";
@@ -26,6 +27,8 @@ function FormularioAgenC() {
     getlistCitas();
   }, []);
   //valores de select
+  const today = new Date();
+  const minSelectableDate = subDays(today, 1)
   const [value, setValue] = useState(new Date()); //Fecha actual
   const [idValue, setidValue] = useState(""); //id del doctor seleccionado para consulta de la base de datos
   const [idValue3, setidValue3] = useState(""); //hora de registro de la cita
@@ -156,6 +159,8 @@ function FormularioAgenC() {
           values.id_doctor = idValuedoc;
           values.hora_reg = idValue3;
           seticitainfoC(values);
+
+        console.log(values)
         }}
       >
         {({ handleChange, handleSubmit, values, }) => (
@@ -260,6 +265,7 @@ function FormularioAgenC() {
                   </p>
                   <DatePicker
                     name="fecha_nac"
+                    minDate={today}
                     
                     InputLabelProps={{
                       classes: {
@@ -362,7 +368,7 @@ function FormularioAgenC() {
                     variant="contained"
                     type="submit"
                    
-                    onClick={() =>setOpenPopup(true)}
+                    onClick={() =>setOpenPopup(true) }
                     sx={{
                       height: "40%",
                       width: "70%",

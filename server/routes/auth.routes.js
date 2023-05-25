@@ -7,17 +7,12 @@ import pool from "../db.js";
 
 router.post("/auth/signup", (req, res, next) => {
   passport.authenticate("local.signup", (err, user, info) => {
-    // successRedirect: "/profile",
-    // failureRedirect: "/signup",
-    // failureFlash: true,
-    if (err) throw err;
-    if (!user) res.send("no es posible que te registre con este correo amigui");
+    if (err) res.status(500).send({ error: info.message });
+    if (!user) res.status(409).send({ error: info.message });
     else {
       req.logIn(user, (err) => {
         if (err) throw err;
-        //res.send("logeado con exito");
-        res.send("Successfully Authenticated");
-       // console.log(user, req.user, "finura29");
+        res.send({ message: "registrado con exito" });
       });
     }
   })(req, res, next);
@@ -26,17 +21,10 @@ router.post("/auth/signin", (req, res, next) => {
   passport.authenticate("local.signin", (err, user, info) => {
     console.log(user, req.user,err,"finura29");
     if (err) throw err;
-   // if (err==="pailos") res.send("mala contraseña");
-    //if (!user) res.send("no existe el usiiuario");
-   // if (!user) res.status(401).json({ error: info.message });
-    if (!user) res.send({error: info.message} );
-
+    if (!user) res.send({ error: info.message });
     else {
       req.logIn(user, (err) => {
         if (err) throw err;
-        //res.send("logeado con exito");
-        
-
         res.send(user);
       });
     }
@@ -79,8 +67,5 @@ router.post("/logout", function (req, res, next) {
     console.log(req.user, "Successfully logedoutmai");
   });
 });
-/*
-router.get("/auth/perfil", getPerfil);
-export default router;
-*/
+
 export default router;

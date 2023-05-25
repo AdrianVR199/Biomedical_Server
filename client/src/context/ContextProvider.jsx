@@ -49,9 +49,7 @@ export const AppContextProvider = ({ children }) => {
   const LoginUser = async (user) => {
     try {
       const response = await loginUserRequest(user);
-      //SetUsuario(response.data);
-      //console.log(Usuario);
-      console.log(response,response.data, "respuesta del metodo login en el context")
+    
       return response;
     } catch (error) {
       console.log(error);

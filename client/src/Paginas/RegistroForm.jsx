@@ -70,7 +70,7 @@ function RegistroForm() {
   console.log(correo, contraseña, "pasinfruit");
   //set de los values
   const [value, setValue] = useState(new Date());
-
+  const today = new Date();
   //valores departamento y ciudad nacimiento
   const [depSelectedna, setdepSelectedna] = React.useState(null);
   const [ciuSelectedna, setciuSelectedna] = React.useState(null);
@@ -404,6 +404,7 @@ function RegistroForm() {
                       <DatePicker
                         name="fecha_nacimiento"
                         label="fecha de nacimiento"
+                        maxDate={today}
                         format="yyyy-MM-dd"
                         InputLabelProps={{
                           classes: {

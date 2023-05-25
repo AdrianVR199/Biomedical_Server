@@ -94,10 +94,10 @@ passport.use(
         "SELECT * FROM usuarios WHERE correo =?",
         [newUser.correo]
       );
-      //console.log(verifyUser[0], "aqui mirreeeeeeeeeeey", newUser.correo);
+     
 
       if (verifyUser[0].length === 0) {
-       // console.log("entroyamete")
+       try{
         newUser.contraseña = await helpers.encryptPassword(password);
         
         const result = await pool.query(
@@ -124,14 +124,16 @@ passport.use(
         const createH = await pool.query("INSERT INTO historiales_clinicos (descripcion, id_paciente, id_doctor) VALUES (?,UUID_TO_BIN(?),?)", [
           "1", newUser.usuario_id,"2"
         ]);
-        return done(null, newUser);
+        return done(null, newUser);}
+        catch(err){
+          return done (null, false, {message:"Hay datos obligatorios que faltan"})
+        }
       } else {
         
-        return done(null, false, console.log("paila mano ya alguien tiene ese correo"));
+        return done(null, false,{ message: "Este correo ya esta registrado" }, console.log("Este correo ya esta registrado"));
       }
 
-      //asegurarse de que el id sea en formato uuid
-      //console.log(newUser.usuario_id, "validacion id en uuid sign up");
+     
     }
   )
 );
@@ -151,7 +153,7 @@ passport.deserializeUser(async (usuario_id, done) => {
 
   const row = rows[0];
   const row1 = row[0];
-  console.log(row1,"soy el que le manda la info al user")
+ // console.log(row1,"soy el que le manda la info al user")
   done(null, row1);
 });
 
