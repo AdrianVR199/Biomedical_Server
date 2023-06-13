@@ -15,15 +15,7 @@ import imgprofile from "../assets/Recurso 1@4x-100.jpg";
 function BarraLateralR({ user }) {
   const navigate = useNavigate();
   const { cerrarSesion } = useAppContext();
-  const [pressed, setPressed] = useState(false);
 
-  const handleClick = () => {
-    setPressed(false);
-  };
-
-  const handleBlur = () => {
-    setPressed(true);
-  };
   return (
     <div className="barra-lateral">
       <div style={{ paddingTop: "5%" }} className="barra-lat-info">
@@ -70,7 +62,7 @@ function BarraLateralR({ user }) {
                 onClick={() => navigate("/Calendariocitas")}
                 sx={{
                   width: 1,
-                  color: "biomedical.blue",
+                  color: "text.secondary",
                   justifyContent: "flex-start",
                   pl: "25px",
                   fontSize: "16px",
@@ -80,22 +72,7 @@ function BarraLateralR({ user }) {
               </Button>
             </li>
             <li>
-              <Button
-              sx={{
-                width: 1,
-                color:pressed ? "#dfecf7" : "biomedical.blue",
-                backgroundColor:pressed ? "biomedical.white" : "#dfecf7",
-                justifyContent: "flex-start",
-                pl: "25px",
-                fontSize: "16px",
-              }}
-                variant="text"
-                
-                onClick={handleClick}
-                onBlur={handleBlur}
-              >
-                My Button
-              </Button>
+             
             </li>
             <li>
               <Button

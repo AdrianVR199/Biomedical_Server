@@ -13,7 +13,6 @@ import {
   Button,
   Checkbox,
   DialogContent,
-  DialogContentText,
 } from "@mui/material";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
 import * as Yup from "yup";
@@ -24,7 +23,8 @@ function SignupForm() {
   const { getCorreos } = useAppContext();
   const [showPassword, setShowPassword] = React.useState(false);
   const [showPassword1, setShowPassword1] = React.useState(false);
-  const [openPopup, setOpenPopup] = useState(false); //estado del popup actualizar cita
+  const [openPopup, setOpenPopup] = useState(false);
+  const [correoRegistrado, setcorreoRegistrado] = React.useState("");
 
   const navigate = useNavigate();
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -47,6 +47,13 @@ function SignupForm() {
       "Debe aceptar los términos y condiciones"
     ),
   });
+  function Mensaje(correoRegistrado) {
+    return correoRegistrado === "nos" ? (
+      <div style={{ fontSize: "13px", marginTop: "5px" }}>
+        El correo ya esta en uso, prueba otro.
+      </div>
+    )  : null;
+  }
   return (
     <div className="Sign-up-bod">
       <div className="Sign-up-form">
@@ -65,7 +72,9 @@ function SignupForm() {
             <h1 style={{ fontSize: "18px", textAlign: "center" }}>
               Registrate
             </h1>
-            <p style={{ fontSize: "14px" }}>Ingresa con tu correo </p>
+            <p style={{ fontSize: "14px" }}>
+              Ingresa tu correo electrónico y crea una contraseña
+            </p>
           </div>
           <div
             style={{ width: "80%", height: "auto" }}
@@ -80,10 +89,9 @@ function SignupForm() {
               }}
               validationSchema={SignupSchema}
               onSubmit={async (values) => {
-                console.log(values);
                 try {
                   const response = await getCorreos({ correo: values.correo });
-                  console.log(response.data.message, values.correo);
+
                   if (response.data.message === "sigue") {
                     navigate("/registro", {
                       state: {
@@ -91,10 +99,8 @@ function SignupForm() {
                         contraseña: values.confirmPassword,
                       },
                     });
-                    //console.log(response.data.id_tipo_usuario, "paciente");
                   } else if (response.data.message === "ocupado") {
-                    //navigate("/calendario");
-                    console.log(response.data.id_tipo_usuario, "medico");
+                    setcorreoRegistrado("nos");
                   }
                 } catch (error) {
                   console.log(error);
@@ -118,7 +124,7 @@ function SignupForm() {
                       className="SU-standard-basic"
                       name="correo"
                       onChange={handleChange}
-                      label="Correo electronico"
+                      label="Correo electrónico"
                       variant="standard"
                       InputLabelProps={{
                         classes: {
@@ -254,6 +260,7 @@ function SignupForm() {
                         onChange={handleChange}
                         sx={{
                           fontSize: "14px",
+                          paddingLeft: "0",
                         }}
                       />
                       <label htmlFor="acceptTerms">
@@ -268,7 +275,7 @@ function SignupForm() {
                           términos y condiciones
                         </span>
                       </label>
-                      {/* <p style={{  fontSize:"14px", cursor:"pointer", textDecoration: }} onClick={()=>setOpenPopup(true)}> Mostrar términos y condiciones</p> */}
+
                       {errors.acceptTerms && (
                         <div
                           style={{
@@ -281,24 +288,23 @@ function SignupForm() {
                         </div>
                       )}
                     </div>
-
+<div>{Mensaje(correoRegistrado)}</div>
                     <Button
                       variant="contained"
                       type="submit"
-                      //onClick={() => navigate("/registro")}
                       sx={{
                         width: 1,
-                        marginTop: "35px",
+                        marginTop: "25px",
                         color: "biomedical.white",
                         backgroundColor: "biomedical.blue",
                         fontSize: "14px",
                         ":hover": {
-                          bgcolor: "biomedical3.blue", // theme.palette.primary.main
+                          bgcolor: "biomedical3.blue",
                           color: "white",
                         },
                       }}
                     >
-                      Registrate
+                      Registrarse
                     </Button>
                   </div>
                   <Popup
@@ -308,8 +314,10 @@ function SignupForm() {
                     titulo="Terminos y condiciones "
                   >
                     <div className="pop-div2">
-                      <DialogContent dividers >
-                        <h1 style={{ fontSize: "18px", fontWeight:"normal" }}>Introducción</h1>
+                      <DialogContent dividers>
+                        <h1 style={{ fontSize: "18px", fontWeight: "normal" }}>
+                          Introducción
+                        </h1>
                         <div style={{ fontSize: "14px" }}>
                           Los presentes Términos y Condiciones de uso de la
                           página web destinada al agendamiento de citas, se
@@ -320,7 +328,9 @@ function SignupForm() {
                           a controles médicos y demás en las sedes puestas a
                           disposición por la compañía.
                         </div>
-                        <h1 style={{ fontSize: "18px",fontWeight:"normal" }}>Marco Legal</h1>
+                        <h1 style={{ fontSize: "18px", fontWeight: "normal" }}>
+                          Marco Legal
+                        </h1>
                         <div style={{ fontSize: "14px" }}>
                           En el presente documento el usuario encontrará las
                           condiciones para el uso de la página web, así como el
@@ -345,7 +355,7 @@ function SignupForm() {
                           contenida en la misma, se entenderá cumplido el deber
                           de información al usuario.
                         </div>
-                        <h1 style={{ fontSize: "18px",fontWeight:"normal" }}>
+                        <h1 style={{ fontSize: "18px", fontWeight: "normal" }}>
                           Uso de la página web de agendamiento de citas
                           Biomedical Group
                         </h1>
@@ -357,13 +367,13 @@ function SignupForm() {
                           usuario dentro del sistema. El proceso de registro lo
                           realiza uno de los trabajadores de la empresa ya sea
                           de forma presencial o a través de una de las líneas de
-                          atención al cliente de la empresa. <br /> La calidad de
-                          Usuario se perderá en los siguientes eventos:
+                          atención al cliente de la empresa. <br /> La calidad
+                          de Usuario se perderá en los siguientes eventos:
                         </div>
-                        <ul >
+                        <ul>
                           <li style={{ fontSize: "14px" }}>
                             1. En el evento en que se logre demostrar que
-                            existió suplantación de identidad. 
+                            existió suplantación de identidad.
                           </li>
                           <li></li>
                           <li style={{ fontSize: "14px" }}>
@@ -374,7 +384,7 @@ function SignupForm() {
                             público o las buenas costumbres.
                           </li>
                         </ul>
-                        <h1 style={{ fontSize: "18px",fontWeight:"normal" }}>
+                        <h1 style={{ fontSize: "18px", fontWeight: "normal" }}>
                           Creación de Usuario para el acceso a la página web de
                           agendamiento de citas:
                         </h1>
@@ -385,7 +395,7 @@ function SignupForm() {
                           como tal a la cual se podrá acceder por medio de una
                           contraseña que será de uso personal e intransferible.
                         </div>
-                        <h1 style={{ fontSize: "18px",fontWeight:"normal" }}>
+                        <h1 style={{ fontSize: "18px", fontWeight: "normal" }}>
                           Uso de la contraseña.
                         </h1>
                         <div style={{ fontSize: "14px" }}>
@@ -425,7 +435,7 @@ function SignupForm() {
                           Group o cualquier tercero que resulte perjudicado por
                           esta actuación.
                         </div>
-                        <h1 style={{ fontSize: "18px",fontWeight:"normal" }}>
+                        <h1 style={{ fontSize: "18px", fontWeight: "normal" }}>
                           Obligaciones del Usuario
                         </h1>
                         <ul>
@@ -439,8 +449,8 @@ function SignupForm() {
                             moral y las buenas costumbres.
                           </li>
                           <li style={{ fontSize: "14px" }}>
-                            b. El usuario garantiza la autenticidad y veracidad de
-                            todos aquellos datos personales e información que
+                            b. El usuario garantiza la autenticidad y veracidad
+                            de todos aquellos datos personales e información que
                             entregue para completar el proceso de agendamiento
                             de la cita. Así mismo, el usuario se compromete y se
                             responsabiliza de mantener actualizada toda la
@@ -456,7 +466,7 @@ function SignupForm() {
                             corresponda
                           </li>
                         </ul>
-                        <h1 style={{ fontSize: "18px", fontWeight:"normal" }}>
+                        <h1 style={{ fontSize: "18px", fontWeight: "normal" }}>
                           Tratamiento de datos personales{" "}
                         </h1>
                         <div style={{ fontSize: "14px" }}>
@@ -480,7 +490,7 @@ function SignupForm() {
                           expone al usuario cuando decide iniciar el proceso de
                           agendamiento.
                         </div>
-                        <h1 style={{ fontSize: "18px", fontWeight:"normal" }}>
+                        <h1 style={{ fontSize: "18px", fontWeight: "normal" }}>
                           Derechos de Propiedad Industrial e Intelectual
                         </h1>
                         <div style={{ fontSize: "14px" }}>
@@ -498,7 +508,9 @@ function SignupForm() {
                           utilidad, patentes y demás elementos sujetos a
                           propiedad intelectual de Biomedical Group.
                         </div>
-                        <h1 style={{ fontSize: "18px", fontWeight:"normal" }}>Derechos de autor </h1>
+                        <h1 style={{ fontSize: "18px", fontWeight: "normal" }}>
+                          Derechos de autor{" "}
+                        </h1>
                         <div style={{ fontSize: "14px" }}>
                           Todo el contenido de cualquier clase que aparezca en
                           la página de agendamiento de citas es susceptible de
@@ -527,7 +539,7 @@ function SignupForm() {
                           susceptible de ser objeto de derechos de autor.
                         </div>
 
-                        <h1 style={{ fontSize: "18px", fontWeight:"normal" }}>
+                        <h1 style={{ fontSize: "18px", fontWeight: "normal" }}>
                           Legislación y jurisdicción
                         </h1>
                         <div style={{ fontSize: "14px" }}>
@@ -537,7 +549,7 @@ function SignupForm() {
                           página de agendamiento de citas suscite será la de los
                           Juzgados y Tribunales de la República de Colombia.
                         </div>
-                        <h1 style={{ fontSize: "18px" , fontWeight:"normal"}}>
+                        <h1 style={{ fontSize: "18px", fontWeight: "normal" }}>
                           Nulidad e ineficacia de los numerales o cláusulas
                         </h1>
                         <div style={{ fontSize: "14px" }}>
@@ -549,7 +561,7 @@ function SignupForm() {
                           subsistiendo los Términos y Condiciones en todo lo
                           demás.
                         </div>
-                        <h1 style={{ fontSize: "18px", fontWeight:"normal" }}>
+                        <h1 style={{ fontSize: "18px", fontWeight: "normal" }}>
                           POLÍTICA DE PRIVACIDAD
                         </h1>
                         <div style={{ fontSize: "14px" }}>
@@ -567,7 +579,7 @@ function SignupForm() {
                           revisar continuamente esta página para asegurarse que
                           está de acuerdo con dichos cambios.
                         </div>
-                        <h1 style={{ fontSize: "18px", fontWeight:"normal" }}>
+                        <h1 style={{ fontSize: "18px", fontWeight: "normal" }}>
                           Información que es recogida
                         </h1>
                         <div style={{ fontSize: "14px" }}>
@@ -580,7 +592,7 @@ function SignupForm() {
                           de profesionales de la salud de Biomedical Group, con
                           el fin de atenderle.
                         </div>
-                        <h1 style={{ fontSize: "18px", fontWeight:"normal" }}>
+                        <h1 style={{ fontSize: "18px", fontWeight: "normal" }}>
                           Uso de la información recogida
                         </h1>
                         <div style={{ fontSize: "14px" }}>
@@ -597,7 +609,9 @@ function SignupForm() {
                           brindar un espacio de atención médica personalizado y
                           ágil.
                         </div>
-                        <h1 style={{ fontSize: "18px", fontWeight:"normal" }}>Cookies</h1>
+                        <h1 style={{ fontSize: "18px", fontWeight: "normal" }}>
+                          Cookies
+                        </h1>
                         <div style={{ fontSize: "14px" }}>
                           Nuestro sitio web emplea las cookies para poder
                           identificar las páginas que son visitadas y su
@@ -617,7 +631,7 @@ function SignupForm() {
                           cookies. Si se declinan es posible que no pueda
                           utilizar algunos de nuestros servicios.
                         </div>
-                        <h1 style={{ fontSize: "18px", fontWeight:"normal" }}>
+                        <h1 style={{ fontSize: "18px", fontWeight: "normal" }}>
                           Control de su información personal
                         </h1>
                         <div style={{ fontSize: "14px" }}>
@@ -640,13 +654,13 @@ function SignupForm() {
                         variant="contained"
                         onClick={() => setOpenPopup(false)}
                         sx={{
-                          width: "70%",
+                          width: "40%",
                           color: "biomedical.white",
                           backgroundColor: "biomedical.blue",
                           fontSize: "14px",
                           margin: 0,
                           ":hover": {
-                            bgcolor: "biomedical3.blue", // theme.palette.primary.main
+                            bgcolor: "biomedical3.blue",
                             color: "white",
                           },
                         }}

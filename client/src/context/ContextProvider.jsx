@@ -28,7 +28,7 @@ import {
   UpdateUsuarioRequest,
   DeleteUsuarioRequest,
 } from "../api/routes.api";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { AppContext } from "./AppContext";
 export const useAppContext = () => {
   const context = useContext(AppContext);
@@ -49,7 +49,7 @@ export const AppContextProvider = ({ children }) => {
   const LoginUser = async (user) => {
     try {
       const response = await loginUserRequest(user);
-    
+
       return response;
     } catch (error) {
       console.log(error);
@@ -58,7 +58,7 @@ export const AppContextProvider = ({ children }) => {
   const getUsuarioinfo = async () => {
     try {
       const response = await loadUserRequest();
-     // console.log(response, "info del us8uario")
+
       return response;
     } catch (error) {
       console.log(error);
@@ -67,7 +67,7 @@ export const AppContextProvider = ({ children }) => {
   const getUsuarioinfoFull = async (id) => {
     try {
       const response = await loadFullUserRequest(id);
-     // console.log(response, "info del us8uario")
+
       return response;
     } catch (error) {
       console.log(error);
@@ -76,8 +76,7 @@ export const AppContextProvider = ({ children }) => {
   const SignUpUser = async (user) => {
     try {
       const response = await signupUserRequest(user);
-      //SetUsuario(response.data);
-      console.log(response, "respuesta del metodo signup en el context");
+
       return response;
     } catch (error) {
       console.log(error);
@@ -97,19 +96,15 @@ export const AppContextProvider = ({ children }) => {
   const getUsuarios = async () => {
     try {
       const response = await getUsuariosRequest();
-      console.log(response.data)
-     // console.log(response, "info del us8uario")
+
       return response.data;
     } catch (error) {
       console.log(error);
     }
-    // const response = await getUsuariosRequest();
-    // SetUsuarios(response.data);
   };
   const updateUsuario = async (id, newfieldstask) => {
     try {
       const response = await ActualizarUsuarioRequest(id, newfieldstask);
-      console.log(response);
     } catch (error) {
       console.log(error);
     }
@@ -118,7 +113,6 @@ export const AppContextProvider = ({ children }) => {
     try {
       const response = await DeleteUsuarioRequest(id);
       SetUsuarios(Usuarios.filter((usuario) => usuario.id !== id));
-      console.log(response);
     } catch (error) {
       console.error(error);
     }
@@ -128,7 +122,6 @@ export const AppContextProvider = ({ children }) => {
   const createCita = async (cita) => {
     try {
       const response = await createCitaRequest(cita);
-      console.log(response);
     } catch (error) {
       console.log(error);
     }
@@ -142,22 +135,18 @@ export const AppContextProvider = ({ children }) => {
     }
   };
   const getCitas = async () => {
-    
     try {
       const response = await getCitasRequest();
-      console.log(response.data)
-     // console.log(response, "info del us8uario")
+
       return response.data;
     } catch (error) {
       console.log(error);
     }
   };
   const getCitasCompletas = async () => {
-    
     try {
       const response = await getCitasCRequest();
-      console.log(response.data)
-     // console.log(response, "info del us8uario")
+
       return response.data;
     } catch (error) {
       console.log(error);
@@ -174,24 +163,20 @@ export const AppContextProvider = ({ children }) => {
   const DeleteCita = async (id) => {
     try {
       const response = await DeleteCitaRequest(id);
-      //SetCitas(Citas.filter((cita) => cita.id !== id));
-      console.log(response,"se borro");
     } catch (error) {
-      console.error(error,"nose borro");
+      console.error(error, "nose borro");
     }
   };
 
-  const getHorarios = async (data) => {  
+  const getHorarios = async (data) => {
     try {
       const response = await getHorariosRequest(data);
-      console.log(response.data,"aqui esta la respuesta de los horarios")
-     // console.log(response, "info del us8uario")
+
       return response.data;
     } catch (error) {
       console.log(error);
     }
   };
-
 
   //funciones manejo de historialeas
   const createHistorial = async (hist) => {
@@ -205,7 +190,7 @@ export const AppContextProvider = ({ children }) => {
   const getHistorial = async (id) => {
     try {
       const response = await getHistorialRequest(id);
-     // console.log(response,response.data)
+
       return response.data;
     } catch (error) {
       console.log(error);
@@ -218,7 +203,6 @@ export const AppContextProvider = ({ children }) => {
   const updateHistorial = async (id, newfieldstask) => {
     try {
       const response = await UpdateHistorialRequest(id, newfieldstask);
-      console.log(response);
     } catch (error) {
       console.log(error);
     }
@@ -227,26 +211,24 @@ export const AppContextProvider = ({ children }) => {
     try {
       const response = await DeleteHistorialRequest(id);
       SetHistoriales(Historiales.filter((historial) => historial.id !== id));
-      console.log(response);
     } catch (error) {
       console.error(error);
     }
   };
 
-  const cerrarSesion=  async()=>{
+  const cerrarSesion = async () => {
     try {
       const response = await CerrarSesionRequest();
       navigate("/login");
     } catch (error) {
       console.log(error);
     }
-  }
-
+  };
 
   const getDepartamentos = async () => {
     try {
       const response = await loadDepartamentosRequest();
-     // console.log(response, "info del us8uario")
+
       return response;
     } catch (error) {
       console.log(error);
@@ -255,7 +237,7 @@ export const AppContextProvider = ({ children }) => {
   const getCiudades = async (id) => {
     try {
       const response = await loadCiudadesRequest(id);
-     // console.log(response, "info del us8uario")
+
       return response;
     } catch (error) {
       console.log(error);
@@ -264,8 +246,7 @@ export const AppContextProvider = ({ children }) => {
   const getCorreos = async (data) => {
     try {
       const response = await loadCorreosRequest(data);
-     // console.log(response, "info del us8uario")
-     //console.log(response)
+
       return response;
     } catch (error) {
       console.log(error);
@@ -275,15 +256,15 @@ export const AppContextProvider = ({ children }) => {
   return (
     <AppContext.Provider
       value={{
-        Usuarios:Usuarios,
-        Citas:Citas,
+        Usuarios: Usuarios,
+        Citas: Citas,
         getUsuarioinfo,
         getHorarios,
         getCorreos,
         getDepartamentos,
         getCiudades,
         getCitasCompletas,
-        Historiales:Historiales,
+        Historiales: Historiales,
         getUsuarioinfoFull,
         LoginUser,
         SignUpUser,
@@ -301,7 +282,7 @@ export const AppContextProvider = ({ children }) => {
         getHistoriales,
         updateHistorial,
         DeleteHistorial,
-        cerrarSesion
+        cerrarSesion,
       }}
     >
       {children}

@@ -1,41 +1,43 @@
 import React from "react";
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
 import CitaCard from "../Componentes/CitaCard";
-import { Box, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 import "../styles/Inicio.css";
 import { useAppContext } from "../context/ContextProvider";
-import Top from '../Componentes/Top'
+import Top from "../Componentes/Top";
 function Inicio() {
-  const {Citas, getCitas}=useAppContext();
+  const { getCitas } = useAppContext();
   const [listcitas, setlistcitas] = useState([]);
   useEffect(() => {
-    const getlistCitas= async()=>{
+    const getlistCitas = async () => {
+      const contentlist = await getCitas();
 
-      const contentlist= await getCitas();
-      console.log(contentlist, "contenido lista")
-      setlistcitas(contentlist)
-    }
+      setlistcitas(contentlist);
+    };
     getlistCitas();
   }, []);
-  //console.log(Citas, "citas en el inicio")
-  // function renderMain() {
-  //   if (listcitas.length === 0) return <h1>nadamono</h1>;
-  //   return listcitas.map((cita) => <CitaCard cita={cita} key={cita.cita_id} /> );
-  // }
+
   function renderMain() {
     const now = new Date();
-    const citasFiltradas = listcitas.filter(cita => {
-      if (!cita.fecha_reg) return false; // descarta las citas sin fecha_reg
+    const citasFiltradas = listcitas.filter((cita) => {
+      if (!cita.fecha_reg) return false;
       const fechaCita = new Date(cita.fecha_reg);
-      return fechaCita.getTime() > now.getTime(); // devuelve true si la fecha de la cita es posterior a la fecha actual
+      return fechaCita.getTime() > now.getTime();
     });
-  
-    if (citasFiltradas.length === 0) return <h1>nadamono</h1>;
-    return citasFiltradas.map((cita) => <CitaCard cita={cita} key={cita.cita_id} />);
+
+    if (citasFiltradas.length === 0)
+      return (
+        <h3 style={{ marginLeft: "3%", fontWeight: "normal" }}>
+          No tienes citas pendientes
+        </h3>
+      );
+    return citasFiltradas.map((cita) => (
+      <CitaCard cita={cita} key={cita.cita_id} />
+    ));
   }
   return (
     <div className="inicio-body">
-            <Top icon={"HomeOutlined"} name={"Inicio"}></Top>
+      <Top icon={"HomeOutlined"} name={"Inicio"}></Top>
       <div className="inicio-container">
         <div className="inicio-container-info">
           <div
@@ -48,11 +50,11 @@ function Inicio() {
               fontSize: "18px",
             }}
           >
-              Citas pendientes
+            Citas pendientes
           </div>
           <div style={{ width: "95%", height: "90%", marginLeft: "4%" }}>
             <Grid container spacing={2} rowSpacing={1}>
-            {renderMain()}
+              {renderMain()}
             </Grid>
           </div>
         </div>

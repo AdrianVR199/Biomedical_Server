@@ -6,7 +6,7 @@ import Top from '../Componentes/Top'
 function EditarCitaPage() {
     return (
         <div className="Form-cita-body">
-            <Top icon={"PendingActionsOutlined"} name={"Editar Cita"}></Top>
+            <Top icon={"TextSnippetOutlined"} name={"Editar Cita"}></Top>
 
         <div className="Form-cita-container">
           <div className="Form-cita-container-info">

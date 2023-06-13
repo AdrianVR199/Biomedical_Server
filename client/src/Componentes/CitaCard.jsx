@@ -42,7 +42,16 @@ function CitaCard({ cita }) {
   const HandlesetCita = (idCita) => {
     setOpenPopupEC(true);
   };
-
+  function mostrarHoraConAmPm(hora) {
+    const f = hora.slice(0, 2);
+    if (f < 12) {
+      const r = `${hora.substring(0, 5)} am`;
+      return r;
+    } else {
+      const r = `${hora.substring(0, 5)} pm`;
+      return r;
+    }
+  }
   //eliminar cita
   const HandleDeleteCita = async (Citaid) => {
     try {
@@ -50,6 +59,8 @@ function CitaCard({ cita }) {
       setOpenPopup(false);
       setOpenPopupEC(false);
       navigate("/inicio");
+
+      window.location.reload();
     } catch (error) {
       console.log(error);
     }
@@ -83,9 +94,8 @@ function CitaCard({ cita }) {
             Tipo de cita: {cita.tipo_cita}
           </Typography>
           <Typography sx={{ fontSize: 13, fontWeight: "bold" }}>
-            Fecha: {fechaAgen} &nbsp; Hora: {cita.hora_reg}
+            Fecha: {fechaAgen} &nbsp; Hora: {mostrarHoraConAmPm(cita.hora_reg)}
           </Typography>
-          {/* <Typography sx={{ fontSize: 13 }}>Hora: {cita.hora_reg}</Typography> */}
         </CardContent>
         <CardActions
           sx={{
@@ -141,12 +151,12 @@ function CitaCard({ cita }) {
                 <p
                   style={{
                     margin: 0,
-                    marginBottom: "15px",
+                    marginBottom: "10px",
                     marginTop: "15px",
                     fontSize: "14px",
                   }}
                 >
-                  Nombre del paciente
+                  Médico
                 </p>
                 <TextField
                   disabled
@@ -161,7 +171,7 @@ function CitaCard({ cita }) {
                       focused: "my-custom-focus-class",
                     },
                   }}
-                  value={cita.nombre_paciente}
+                  value={cita.nombre_medico}
                   sx={{
                     width: "80%",
                   }}
@@ -172,7 +182,7 @@ function CitaCard({ cita }) {
                 <p
                   style={{
                     margin: 0,
-                    marginBottom: "15px",
+                    marginBottom: "10px",
                     marginTop: "15px",
                     fontSize: "14px",
                   }}
@@ -180,7 +190,6 @@ function CitaCard({ cita }) {
                   Fecha de agendamiento
                 </p>
                 <TextField
-                  // name="fecha_nac"
                   disabled
                   size="small"
                   InputLabelProps={{
@@ -204,7 +213,7 @@ function CitaCard({ cita }) {
                 <p
                   style={{
                     margin: 0,
-                    marginBottom: "15px",
+                    marginBottom: "10px",
                     marginTop: "15px",
                     fontSize: "14px",
                   }}
@@ -216,7 +225,7 @@ function CitaCard({ cita }) {
                   size="small"
                   disabled
                   id="outlined-start-adornment"
-                  value={cita.hora_reg || ""}
+                  value={mostrarHoraConAmPm(cita.hora_reg) || ""}
                   InputLabelProps={{
                     classes: {
                       focused: "my-custom-focus-label",
@@ -237,7 +246,7 @@ function CitaCard({ cita }) {
                 <p
                   style={{
                     margin: 0,
-                    marginBottom: "15px",
+                    marginBottom: "10px",
                     marginTop: "15px",
                     fontSize: "14px",
                   }}
@@ -269,7 +278,7 @@ function CitaCard({ cita }) {
                 <p
                   style={{
                     margin: 0,
-                    marginBottom: "15px",
+                    marginBottom: "10px",
                     marginTop: "15px",
                     fontSize: "14px",
                   }}
@@ -311,13 +320,25 @@ function CitaCard({ cita }) {
             <div>
               <h1 style={{ fontSize: "15px" }}>Recomendaciones</h1>
               <p style={{ fontSize: "14px" }}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                sunt in culpa qui officia deserunt mollit anim id est laborum
+                Recuerda tener en cuenta las siguientes recomendaciones
+                generales a tener en cuenta para asistir a tu cita médica en
+                Biomedical Group : <br />
+                <br />
+                1. Prepárate para tu cita: Antes de asistir a tu cita médica,
+                asegurate de tener a mano toda información relevante sobre tu
+                situación de salud actual, historial médico y síntomas.
+                <br />
+                <br />
+                2. Llega con anticipación: Intenta llegar al centro médico con
+                20 minutos de anticipación para presentarte en la recepción y
+                evitar perder tu cita médica.
+                <br />
+                <br />
+                3. Se claro y específico: Durante tu cita médica, ten en cuenta
+                comunicar correctamente tus síntomas de forma clara y concisa,
+                proporcionando los detalles suficientes para la correcta
+                evaluación del médico.
+                <br />
               </p>
             </div>
             <div className="F-A-botones-popup">

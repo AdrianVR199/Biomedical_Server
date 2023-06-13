@@ -1,5 +1,4 @@
 import pool from "../db.js";
-import { createBinaryUUID, fromBinaryUUID } from "binary-uuid";
 
 export const getUsuarios = async (req, res) => {
   try {
@@ -32,7 +31,6 @@ export const updateUsuario = async (req, res) => {
   try {
     //throw new Error("error de conexion");
 
-    console.log(req,req.body,req.params.id, "aquiiiii")
     const result = await pool.query(
       "UPDATE usuarios SET ? WHERE BIN_TO_UUID(usuario_id) = ?",
       [req.body, req.params.id]

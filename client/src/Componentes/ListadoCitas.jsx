@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, esES } from "@mui/x-data-grid";
 import { Button, Box, TextField } from "@mui/material";
-import { HomeOutlined } from "@mui/icons-material";
+import { ContentPasteSearch } from "@mui/icons-material";
 import Popup from "./Popup";
+import { format } from "date-fns";
 import { useAppContext } from "../context/ContextProvider";
 
 function ListadoCitas() {
@@ -12,16 +13,23 @@ function ListadoCitas() {
     const time = new Date(`01/01/2000 ${timeString}`);
     let hours = String(time.getHours()).padStart(2, "0");
     const minutes = String(time.getMinutes()).padStart(2, "0");
-    //const seconds = time.getSeconds();
     const ampm = hours >= 12 ? "PM" : "AM";
-
     hours %= 12;
     hours = hours ? hours : 12;
-
     const formattedTime = `${hours}:${minutes} ${ampm}`;
-
     return formattedTime;
   }
+
+  const mostrarHoraConAmPm = (hora) => {
+    const f = hora.slice(0, 2);
+    if (f < 12) {
+      const r = `${hora.substring(0, 5)} am`;
+      return r;
+    } else {
+      const r = `${hora.substring(0, 5)} pm`;
+      return r;
+    }
+  };
  
   function formatDate(dateString) {
     const date = new Date(dateString);
@@ -57,9 +65,9 @@ function ListadoCitas() {
 
       const now = new Date();
       const citasFiltradas = contentlist.filter((cita) => {
-        if (!cita.fecha_reg) return false; // descarta las citas sin fecha_reg
+        if (!cita.fecha_reg) return false;
         const fechaCita = new Date(cita.fecha_reg);
-        return fechaCita.getTime() < now.getTime(); // devuelve true si la fecha de la cita es posterior a la fecha actual
+        return fechaCita.getTime() < now.getTime();
       });
       setlistcitas(citasFiltradas);
     };
@@ -73,6 +81,8 @@ function ListadoCitas() {
     col4: item.nombre_medico,
   }));
   const [citamos, setcitamos] = useState("");
+  const [citaHora, setcitaHora] = useState("");
+  const [citaFecha, setcitaFecha] = useState("");
 
   const handleButtonClick = (params, list) => {
     const rowData = params.row;
@@ -81,6 +91,8 @@ function ListadoCitas() {
     );
     if (objetoEncontrado) {
       setcitamos(objetoEncontrado);
+      setcitaHora(mostrarHoraConAmPm(objetoEncontrado.hora_reg));
+      setcitaFecha(formatDate(objetoEncontrado.fecha_reg));
     }
     setOpenPopup(true);
   };
@@ -89,28 +101,28 @@ function ListadoCitas() {
     {
       field: "col1",
       headerName: "Fecha",
-      width: 250,
+      flex: 1,
       align: "center",
       headerAlign: "center",
     },
     {
       field: "col2",
       headerName: "Hora",
-      width: 150,
+      flex: 1,
       align: "center",
       headerAlign: "center",
     },
     {
       field: "col3",
       headerName: "Tipo de Cita",
-      width: 200,
+      flex: 1,
       align: "center",
       headerAlign: "center",
     },
     {
       field: "col4",
-      headerName: "Atendido por:",
-      width: 310,
+      headerName: "Médico",
+      flex: 1,
       align: "center",
       headerAlign: "center",
     },
@@ -118,9 +130,10 @@ function ListadoCitas() {
       field: "col5",
       align: "center",
       headerName: "Revisar",
-      width: 60,
+      align: "center",
+      headerAlign: "center",
       renderCell: (params) => (
-        <HomeOutlined
+        <ContentPasteSearch
           style={{ cursor: "pointer" }}
           backgroundcolor="biomedical.green"
           onClick={() => handleButtonClick(params, listcitas)}
@@ -134,14 +147,14 @@ function ListadoCitas() {
     >
       <DataGrid
         rows={rows1.reverse()}
+        localeText={esES.components.MuiDataGrid.defaultProps.localeText}
         columns={columns}
         hideFooterSelectedRowCount
         hide
         initialState={{
-          pagination: { paginationModel: { pageSize: 8 } },
+          pagination: { paginationModel: { pageSize: 10 } },
         }}
-        pageSizeOptions={[8]}
-        //pageSizeOptions={false}
+        pageSizeOptions={[10, 20, 50, 100]}
       />
       <Popup
         openPopup={openPopup}
@@ -171,9 +184,8 @@ function ListadoCitas() {
                   Nombre del paciente
                 </p>
                 <TextField
-                  // name="fecha_nac"
-
                   size="small"
+                  disabled
                   InputLabelProps={{
                     classes: {
                       focused: "my-custom-focus-label",
@@ -185,9 +197,6 @@ function ListadoCitas() {
                     },
                   }}
                   value={citamos.nombre_paciente || ""}
-                  // onChange={(value)=>setValue()}
-
-                  // handleChange={handleChange}
                   sx={{
                     width: "80%",
                   }}
@@ -206,9 +215,8 @@ function ListadoCitas() {
                   Fecha de agendamiento
                 </p>
                 <TextField
-                  // name="fecha_nac"
-
                   size="small"
+                  disabled
                   InputLabelProps={{
                     classes: {
                       focused: "my-custom-focus-label",
@@ -219,11 +227,7 @@ function ListadoCitas() {
                       focused: "my-custom-focus-class",
                     },
                   }}
-                  value={citamos.fecha_reg || ""}
-                  // value={value}
-                  // onChange={(value)=>setValue()}
-
-                  // handleChange={handleChange}
+                  value={citaFecha || ""}
                   sx={{
                     width: "80%",
                   }}
@@ -244,8 +248,8 @@ function ListadoCitas() {
                 <TextField
                   name="nombre"
                   size="small"
-                  id="outlined-start-adornment"
-                  value={citamos.hora_reg || ""}
+                  disabled
+                  value={citaHora || ""}
                   InputLabelProps={{
                     classes: {
                       focused: "my-custom-focus-label",
@@ -275,7 +279,7 @@ function ListadoCitas() {
                 </p>
                 <TextField
                   name="nombre"
-                  //label="Tipo de cita"
+                  disabled
                   id="outlined-start-adornment"
                   size="small"
                   value={citamos.tipo_cita || ""}
@@ -311,12 +315,12 @@ function ListadoCitas() {
                   fontSize: "14px",
                 }}
               >
-                Atendido por
+                Médico
               </p>
               <TextField
                 name="nombre"
-                //label="Tipo de cita"
                 id="outlined-start-adornment"
+                disabled
                 size="small"
                 value={citamos.nombre_medico || ""}
                 InputLabelProps={{
@@ -347,6 +351,7 @@ function ListadoCitas() {
               </p>
               <TextField
                 name="motivo_consulta"
+                disabled
                 value={citamos.motivo_consulta || ""}
                 size="small"
                 id="outlined-start-adornment"

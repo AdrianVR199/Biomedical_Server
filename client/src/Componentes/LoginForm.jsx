@@ -18,15 +18,20 @@ import * as Yup from "yup";
 function LoginForm() {
   const { LoginUser } = useAppContext();
   const navigate = useNavigate();
-  const [showPassword, setShowPassword] = React.useState(false);        //opcion mostrar contraseña
-  const [correoRegistrado, setcorreoRegistrado] = React.useState("");   //dato de si el correo esta registrado
+  const [showPassword, setShowPassword] = React.useState(false);
+  const [correoRegistrado, setcorreoRegistrado] = React.useState("");
 
   //mensaje de validacion
   function Mensaje(correoRegistrado) {
     return correoRegistrado === "nos" ? (
-      <div style={{fontSize:"13px", marginTop:"5px"}}>Contraseña erronea</div>
+      <div style={{ fontSize: "13px", marginTop: "5px" }}>
+        Contraseña erronea
+      </div>
     ) : correoRegistrado === "no" ? (
-      <div style={{fontSize:"13px", marginTop:"5px"}}>El correo electronico no esta asociado a ningun usuario, registrate en la seccion inferior </div>
+      <div style={{ fontSize: "13px", marginTop: "5px" }}>
+        El correo electronico no esta asociado a ningun usuario, registrate en
+        la seccion inferior{" "}
+      </div>
     ) : null;
   }
   //esquema de validacion
@@ -41,7 +46,7 @@ function LoginForm() {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
-  
+
   return (
     <div className="Login-bod">
       <div className="Login-form">
@@ -73,28 +78,21 @@ function LoginForm() {
               }}
               validationSchema={validationSchema}
               onSubmit={async (values) => {
-               
                 try {
                   const response = await LoginUser(values);
                   if (response.data.id_tipo_usuario === 1) {
                     navigate("/inicio");
-                    console.log(response.data.id_tipo_usuario, "paciente");
                   } else if (response.data.id_tipo_usuario === 2) {
                     navigate("/calendario");
-                    console.log(response.data.id_tipo_usuario, "medico");
                   } else if (response.data.id_tipo_usuario === 3) {
                     navigate("/Calendariocitas");
-                    console.log(response.data.id_tipo_usuario, "recepcion");
                   } else if (response.data.error === "Contraseña incorrecta") {
-                    console.log("contraseña mala");
                     setcorreoRegistrado("nos");
                   } else {
-                    console.log("usuario no existe");
                     setcorreoRegistrado("no");
-                   
                   }
                 } catch (error) {
-                  console.log(error,"cuaaccc");
+                  console.log(error);
                 }
               }}
             >
@@ -111,7 +109,7 @@ function LoginForm() {
                     className="standard-basic"
                     name="correo"
                     onChange={handleChange}
-                    label="Correo electronico"
+                    label="Correo electrónico"
                     variant="standard"
                     InputLabelProps={{
                       classes: {
@@ -135,7 +133,6 @@ function LoginForm() {
                       Contraseña
                     </InputLabel>
                     <Input
-                      //className="input-pass-formreg"
                       onChange={handleChange}
                       name="contraseña"
                       type={showPassword ? "text" : "password"}
@@ -156,7 +153,6 @@ function LoginForm() {
                         touched.contraseña && errors.contraseña ? "error" : null
                       }
                       aria-invalid={errors.contraseña ? "true" : "false"}
-                      //helperText={touched.contraseña && errors.contraseña}
                     />
                     {touched.contraseña && errors.contraseña ? (
                       <div
@@ -173,7 +169,6 @@ function LoginForm() {
                   <Button
                     variant="outlined"
                     type="submit"
-                    //  onClick={() => navigate("/inicio")}
                     sx={{
                       width: 1,
 
@@ -196,12 +191,10 @@ function LoginForm() {
                 </Form>
               )}
             </Formik>
-            <div>
-              {Mensaje(correoRegistrado)}
-            </div>
+            <div>{Mensaje(correoRegistrado)}</div>
           </div>
           <div style={{ width: "80%", height: "auto" }}>
-            <p style={{ fontSize: "14px" }}>No tienes cuenta?</p>
+            <p style={{ fontSize: "14px" }}>¿No tienes cuenta?</p>
 
             <Button
               variant="contained"
@@ -213,7 +206,7 @@ function LoginForm() {
                 backgroundColor: "biomedical.blue",
                 fontSize: "14px",
                 ":hover": {
-                  bgcolor: "biomedical3.blue", // theme.palette.primary.main
+                  bgcolor: "biomedical3.blue",
                   color: "white",
                 },
               }}

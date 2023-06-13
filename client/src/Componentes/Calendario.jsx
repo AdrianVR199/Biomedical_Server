@@ -14,13 +14,21 @@ function Calendario() {
   const [listcitas, setlistcitas] = useState([]);
   const [usuario, setUsuario] = useState({});
   const navigate = useNavigate();
-
+  const mostrarHoraConAmPm = (hora) => {
+    const f = hora.slice(0, 2);
+    if (f < 12) {
+      const r = `${hora.substring(0, 5)} am`;
+      return r;
+    } else {
+      const r = `${hora.substring(0, 5)} pm`;
+      return r;
+    }
+  };
   useEffect(() => {
     const getlistCitas = async () => {
       const contentlist = await getCitasCompletas();
       const uinfo = await getUsuarioinfo();
       setUsuario(uinfo.data);
-      // console.log(contentlist, "contenido lista");
       setlistcitas(contentlist);
     };
     getlistCitas();
@@ -37,7 +45,6 @@ function Calendario() {
   const [openPopup, setOpenPopup] = useState(false); //estado del popup
   const [infovalue, setinfoValue] = useState([]); //información de la cita seleccionada del calendario
   const [value, setValue] = useState(new Date()); //valor de la fecha actual
-  const [idValue, setidValue] = useState(""); //
 
   //función para seleccionar la info de la cita
   const handleEventClick = (info) => {
@@ -63,12 +70,12 @@ function Calendario() {
         ? "#6bd16f"
         : "#4fa9f0",
     extendedProps: {
-      fecha_reg: item.fecha_reg, // "2023-02-21T05:00:00.000Z",
+      fecha_reg: item.fecha_reg,
       motivo_consulta: item.motivo_consulta,
-      hora_reg: item.hora_reg, /// "xxxxxxxxxxxxxxxxxxxxxxxx",
-      nombre_medico: item.nombre_medico, // "carlos",
-      nombre_paciente: item.nombre_paciente, // "andres",
-      tipo_cita: item.tipo_cita, // "primera vez",
+      hora_reg: item.hora_reg,
+      nombre_medico: item.nombre_medico,
+      nombre_paciente: item.nombre_paciente,
+      tipo_cita: item.tipo_cita,
       id_paciente: item.id_paciente,
       id_doctor: item.id_doctor,
     },
@@ -88,12 +95,12 @@ function Calendario() {
           ? "#6bd16f"
           : "#4fa9f0",
       extendedProps: {
-        fecha_reg: item.fecha_reg, // "2023-02-21T05:00:00.000Z",
+        fecha_reg: item.fecha_reg,
         motivo_consulta: item.motivo_consulta,
-        hora_reg: item.hora_reg, /// "xxxxxxxxxxxxxxxxxxxxxxxx",
-        nombre_medico: item.nombre_medico, // "carlos",
-        nombre_paciente: item.nombre_paciente, // "andres",
-        tipo_cita: item.tipo_cita, // "primera vez",
+        hora_reg: item.hora_reg,
+        nombre_medico: item.nombre_medico,
+        nombre_paciente: item.nombre_paciente,
+        tipo_cita: item.tipo_cita,
         id_paciente: item.id_paciente,
         id_doctor: item.id_doctor,
       },
@@ -128,10 +135,9 @@ function Calendario() {
   };
   const filterEvents = (events) => {
     if (filterValue === "Todas las citas" || !filterValue) {
-      // Si no se ha seleccionado ningún valor, se muestran todos los eventos
       return events;
     }
-    // Filtrar los eventos que tengan una propiedad "extendedProps.myProperty" igual al valor seleccionado
+
     return events.filter(
       (event) => event.extendedProps.id_doctor === filterValue
     );
@@ -148,7 +154,6 @@ function Calendario() {
             top: "13.8%",
           }}
           size="small"
-          //defaultValue="Todas las citas"
           value={filterValue}
           onChange={handleFilterChange}
         >
@@ -164,9 +169,7 @@ function Calendario() {
 
       <FullCalendar
         events={
-          usuario.id_tipo_usuario === 3
-            ? filterEvents(rowscitas11)
-            : rowcitamed
+          usuario.id_tipo_usuario === 3 ? filterEvents(rowscitas11) : rowcitamed
         }
         eventClick={handleEventClick}
         locale={esLocale}
@@ -188,13 +191,12 @@ function Calendario() {
         }}
         allDaySlot={false}
         headerToolbar={{
-          start: "dayGridMonth,timeGridWeek,timeGridDay today", // will normally be on the left. if RTL, will be on the right
+          start: "dayGridMonth,timeGridWeek,timeGridDay today",
           center: "",
           end: "title prevYear,prev next,nextYear",
         }}
       />
       <Popup
-        //citaInfo={citaInfo}
         openPopup={openPopup}
         setOpenPopup={setOpenPopup}
         width="md"
@@ -258,7 +260,6 @@ function Calendario() {
                   Fecha de agendamiento
                 </p>
                 <TextField
-                  // name="fecha_nac"
                   value={
                     infovalue.extendedProps
                       ? formatDateslice(infovalue.extendedProps.fecha_reg)
@@ -276,13 +277,9 @@ function Calendario() {
                       focused: "my-custom-focus-class",
                     },
                   }}
-                  // value={value}
-                  // onChange={(value)=>setValue()}
-
                   onChange={(newValue) => {
                     setValue(newValue);
                   }}
-                  // handleChange={handleChange}
                   sx={{
                     width: "80%",
                   }}
@@ -305,7 +302,7 @@ function Calendario() {
                   size="small"
                   value={
                     infovalue.extendedProps
-                      ? infovalue.extendedProps.hora_reg
+                      ? mostrarHoraConAmPm(infovalue.extendedProps.hora_reg)
                       : ""
                   }
                   disabled
@@ -320,7 +317,6 @@ function Calendario() {
                       focused: "my-custom-focus-class",
                     },
                   }}
-                  //onChange={handleChange}
                   sx={{
                     width: "80%",
                   }}
@@ -341,7 +337,6 @@ function Calendario() {
                 <TextField
                   name="nombre"
                   disabled
-                  //  label={idValue}
                   value={
                     infovalue.extendedProps
                       ? infovalue.extendedProps.tipo_cita
@@ -359,7 +354,6 @@ function Calendario() {
                       focused: "my-custom-focus-class",
                     },
                   }}
-                  //onChange={handleChange}
                   sx={{
                     width: "80%",
                   }}
@@ -409,7 +403,6 @@ function Calendario() {
                     focused: "my-custom-focus-class",
                   },
                 }}
-                // onChange={handleChange}
                 sx={{ width: "80%" }}
               />
             </div>
@@ -460,7 +453,7 @@ function Calendario() {
                   margin: 0,
 
                   ":hover": {
-                    bgcolor: "biomedical3.blue", // theme.palette.primary.main
+                    bgcolor: "biomedical3.blue",
                     color: "white",
                   },
                 }}

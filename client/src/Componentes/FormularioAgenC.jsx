@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { DatePicker } from "@mui/x-date-pickers";
-import { Form, Formik } from "formik";
+import { Form, Formik, ErrorMessage, Field } from "formik";
 import {
   Box,
   TextField,
@@ -8,9 +8,12 @@ import {
   Select,
   FormControl,
   MenuItem,
+  NativeSelect,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { subDays } from 'date-fns';
+import { format } from "date-fns";
+import * as Yup from "yup";
+import { subDays } from "date-fns";
 import "../styles/FormAgenC.css";
 import Popup from "../Componentes/Popup";
 import { useAppContext } from "../context/ContextProvider";
@@ -21,14 +24,14 @@ function FormularioAgenC() {
   useEffect(() => {
     const getlistCitas = async () => {
       const contentlist = await getCitas();
-     
+
       setlistadoCitas2(contentlist);
     };
     getlistCitas();
   }, []);
   //valores de select
   const today = new Date();
-  const minSelectableDate = subDays(today, 1)
+  const minSelectableDate = subDays(today, 1);
   const [value, setValue] = useState(new Date()); //Fecha actual
   const [idValue, setidValue] = useState(""); //id del doctor seleccionado para consulta de la base de datos
   const [idValue3, setidValue3] = useState(""); //hora de registro de la cita
@@ -39,7 +42,6 @@ function FormularioAgenC() {
   const [listadoCitas2, setlistadoCitas2] = useState([]); //Listado de las citas medicas actuales del usuario
   const [listadoCitas3, setlistadoCitas3] = useState([]); //Listado de los horarios de las citas actuales
 
-  
   const [idValuedoc, setidValuedoc] = useState("");
 
   //formateador fecha
@@ -65,7 +67,6 @@ function FormularioAgenC() {
     );
     setnombredoc(objetoBuscado);
     setidValuedoc(event.target.value);
-   
   };
   //controlador valores select de tipo de cita
   const handleChangeid = (event) => {
@@ -82,7 +83,6 @@ function FormularioAgenC() {
       const response = await createCita(citaI);
 
       navigate("/inicio");
-      
     } catch (error) {
       console.log(error);
     }
@@ -91,7 +91,6 @@ function FormularioAgenC() {
   const gethorariosAvailable = async (infohorarios) => {
     const inforesult = await getHorarios(infohorarios);
     setlistadoCitas(inforesult);
-   
   };
 
   //listados de horarios predeterminados y doctores de la base de datos
@@ -119,10 +118,10 @@ function FormularioAgenC() {
   function mostrarHoraConAmPm(hora) {
     const f = hora.slice(0, 2);
     if (f < 12) {
-      const r = `${hora} am`;
+      const r = `${hora.substring(0, 5)} am`;
       return r;
     } else {
-      const r = `${hora} pm`;
+      const r = `${hora.substring(0, 5)} pm`;
       return r;
     }
   }
@@ -140,7 +139,19 @@ function FormularioAgenC() {
     const frrr = fec.slice(0, 10);
     return frrr;
   }
- 
+  const formatFecha = (date) => {
+    const dateObj = new Date(date);
+    const formattedDate = format(dateObj, "yyyy-MM-dd");
+    return formattedDate;
+  };
+
+  const validationSchema = Yup.object().shape({
+    id_doctor: Yup.string().required("Campo requerido"),
+    fecha_reg: Yup.string().required("Campo requerido"),
+    hora_reg: Yup.string().required("Campo requerido"),
+    tipo_cita: Yup.date().required("Campo requerido"),
+  });
+
   return (
     <div>
       <Formik
@@ -152,19 +163,24 @@ function FormularioAgenC() {
           estado_asistencia: 1,
           motivo_consulta: "",
         }}
+        validationSchema={validationSchema}
         onSubmit={(values) => {
-         
           values.fecha_reg = formatDate(value);
           values.tipo_cita = idValue;
           values.id_doctor = idValuedoc;
           values.hora_reg = idValue3;
           seticitainfoC(values);
-
-        console.log(values)
         }}
       >
-        {({ handleChange, handleSubmit, values, }) => (
-          <Form>
+        {({
+          handleChange,
+          handleSubmit,
+          values,
+          handleBlur,
+          touched,
+          errors,
+        }) => (
+          <Form onSubmit={handleSubmit}>
             <div>
               <Box
                 sx={{
@@ -176,8 +192,9 @@ function FormularioAgenC() {
               >
                 <div style={{ width: "50%" }}>
                   <p style={{ width: "70%", marginBottom: "40px" }}>
-                    1. Selecciona el doctor que te atenderá:
+                    1. Selecciona el médico que te atenderá:
                   </p>
+
                   <FormControl
                     focused
                     sx={{
@@ -186,10 +203,11 @@ function FormularioAgenC() {
                   >
                     <Select
                       className="iiiii"
-                      
+                      size="small"
+                      name="id_doctor"
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
-                      value={idValuedoc}
+                 
                       onChange={handleChangeid2}
                       sx={{
                         ".MuiOutlinedInput-notchedOutline": {
@@ -218,7 +236,7 @@ function FormularioAgenC() {
                 </div>
                 <div style={{ width: "50%" }}>
                   <p style={{ width: "70%", marginBottom: "40px" }}>
-                    4. Seleccion el tipo de cita.
+                    4. Selecciona el tipo de cita:
                   </p>
                   <FormControl
                     focused
@@ -228,9 +246,9 @@ function FormularioAgenC() {
                   >
                     <Select
                       className="iiiii"
+                      size="small"
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
-                      
                       value={idValue}
                       onChange={handleChangeid}
                       sx={{
@@ -261,12 +279,17 @@ function FormularioAgenC() {
                 <div style={{ width: "50%" }}>
                   <p style={{ width: "70%", marginBottom: "25px" }}>
                     2. Busca y selecciona la fecha deseada para agendar tu cita
-                    medica.
+                    médica:
                   </p>
                   <DatePicker
                     name="fecha_nac"
                     minDate={today}
-                    
+                    slotProps={{
+                      textField: {
+                        size: "small",
+                        
+                      },
+                    }}
                     InputLabelProps={{
                       classes: {
                         focused: "my-custom-focus-label",
@@ -280,7 +303,7 @@ function FormularioAgenC() {
                     value={value}
                     onChange={(newValue) => {
                       setValue(newValue);
-                  
+
                       gethorariosAvailable(
                         {
                           id_doctor: idValuedoc,
@@ -288,7 +311,7 @@ function FormularioAgenC() {
                         },
                         "yeah"
                       );
-                  
+
                       setlistadoCitas3(
                         horariosTomados(listadoCitas2, formatDate(newValue))
                       );
@@ -300,11 +323,11 @@ function FormularioAgenC() {
                   />
                 </div>
                 <div style={{ width: "50%" }}>
-                  <p>5. Describe el motivo de la consulta.</p>
+                  <p>5. Describe el motivo de la consulta:</p>
                   <TextField
                     name="motivo_consulta"
+                    size="small"
                     id="outlined-start-adornment"
-                   
                     multiline
                     rows={3}
                     InputLabelProps={{
@@ -323,7 +346,7 @@ function FormularioAgenC() {
                   />
                 </div>
                 <div style={{ width: "50%" }}>
-                  <p>3. Selecciona el horario para tu cita.</p>
+                  <p>3. Selecciona el horario para tu cita médica:</p>
                   <FormControl
                     focused
                     sx={{
@@ -331,8 +354,8 @@ function FormularioAgenC() {
                     }}
                   >
                     <Select
-                    
                       value={idValue3}
+                      size="small"
                       onChange={handleChangeid3}
                       sx={{
                         ".MuiOutlinedInput-notchedOutline": {
@@ -367,8 +390,7 @@ function FormularioAgenC() {
                   <Button
                     variant="contained"
                     type="submit"
-                   
-                    onClick={() =>setOpenPopup(true) }
+                    onClick={() => setOpenPopup(true)}
                     sx={{
                       height: "40%",
                       width: "70%",
@@ -416,12 +438,12 @@ function FormularioAgenC() {
                         <p
                           style={{
                             margin: 0,
-                            marginBottom: "15px",
+                            marginBottom: "10px",
                             marginTop: "15px",
                             fontSize: "14px",
                           }}
                         >
-                          Doctor
+                          Médico
                         </p>
                         <TextField
                           disabled
@@ -447,7 +469,7 @@ function FormularioAgenC() {
                         <p
                           style={{
                             margin: 0,
-                            marginBottom: "15px",
+                            marginBottom: "10px",
                             marginTop: "15px",
                             fontSize: "14px",
                           }}
@@ -455,7 +477,6 @@ function FormularioAgenC() {
                           Fecha de agendamiento
                         </p>
                         <TextField
-                          // name="fecha_nac"
                           disabled
                           size="small"
                           InputLabelProps={{
@@ -468,13 +489,10 @@ function FormularioAgenC() {
                               focused: "my-custom-focus-class",
                             },
                           }}
-                          // value={value}
-                          // onChange={(value)=>setValue()}
-                          value={value}
+                          value={formatFecha(value)}
                           onChange={(newValue) => {
                             setValue(newValue);
                           }}
-                          // handleChange={handleChange}
                           sx={{
                             width: "80%",
                           }}
@@ -485,7 +503,7 @@ function FormularioAgenC() {
                         <p
                           style={{
                             margin: 0,
-                            marginBottom: "15px",
+                            marginBottom: "10px",
                             marginTop: "15px",
                             fontSize: "14px",
                           }}
@@ -496,7 +514,7 @@ function FormularioAgenC() {
                           disabled
                           name="hora_reg"
                           size="small"
-                          value={values.hora_reg || ""}
+                          value={mostrarHoraConAmPm(values.hora_reg) || ""}
                           id="outlined-start-adornment"
                           InputLabelProps={{
                             classes: {
@@ -519,7 +537,7 @@ function FormularioAgenC() {
                         <p
                           style={{
                             margin: 0,
-                            marginBottom: "15px",
+                            marginBottom: "10px",
                             marginTop: "15px",
                             fontSize: "14px",
                           }}
@@ -529,6 +547,7 @@ function FormularioAgenC() {
                         <TextField
                           name="tipocita"
                           label={idValue}
+                          disabled
                           id="outlined-start-adornment"
                           size="small"
                           InputLabelProps={{
@@ -551,7 +570,7 @@ function FormularioAgenC() {
                         <p
                           style={{
                             margin: 0,
-                            marginBottom: "15px",
+                            marginBottom: "10px",
                             marginTop: "15px",
                             fontSize: "14px",
                           }}
@@ -594,21 +613,33 @@ function FormularioAgenC() {
                     <div>
                       <h1 style={{ fontSize: "15px" }}>Recomendaciones</h1>
                       <p style={{ fontSize: "14px" }}>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                        sed do eiusmod tempor incididunt ut labore et dolore
-                        magna aliqua. Ut enim ad minim veniam, quis nostrud
-                        exercitation ullamco laboris nisi ut aliquip ex ea
-                        commodo consequat. Duis aute irure dolor in
-                        reprehenderit in voluptate velit esse cillum dolore eu
-                        fugiat nulla pariatur. Excepteur sint occaecat cupidatat
-                        non proident, sunt in culpa qui officia deserunt mollit
-                        anim id est laborum
+                        Recuerda tener en cuenta las siguientes recomendaciones
+                        generales a tener en cuenta para asistir a tu cita
+                        médica en Biomedical Group : <br />
+                        <br />
+                        1. Prepárate para tu cita: Antes de asistir a tu cita
+                        médica, asegurate de tener a mano toda información
+                        relevante sobre tu situación de salud actual, historial
+                        médico y síntomas.
+                        <br />
+                        <br />
+                        2. Llega con anticipación: Intenta llegar al centro
+                        médico con 20 minutos de anticipación para presentarte
+                        en la recepción y evitar perder tu cita médica.
+                        <br />
+                        <br />
+                        3. Se claro y específico: Durante tu cita médica, ten en
+                        cuenta comunicar correctamente tus síntomas de forma
+                        clara y concisa, proporcionando los detalles suficientes
+                        para la correcta evaluación del médico.
+                        <br />
                       </p>
                     </div>
                     <div className="F-A-botones-popup">
                       <Button
                         variant="outlined"
                         onClick={() => setOpenPopup(false)}
+                        size="small"
                         sx={{
                           width: "35%",
                           borderColor: "bioimedical.blue",
@@ -629,6 +660,7 @@ function FormularioAgenC() {
                       <Button
                         variant="contained"
                         type="submit"
+                        size="small"
                         form="form-registro-p"
                         onClick={() => handleCreateCita(citainfoC)}
                         sx={{
@@ -639,7 +671,7 @@ function FormularioAgenC() {
                           margin: 0,
 
                           ":hover": {
-                            bgcolor: "biomedical3.blue", // theme.palette.primary.main
+                            bgcolor: "biomedical3.blue",
                             color: "white",
                           },
                         }}

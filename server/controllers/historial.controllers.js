@@ -1,6 +1,5 @@
 import pool from "../db.js";
-import { createBinaryUUID, fromBinaryUUID } from "binary-uuid";
-
+import { fromBinaryUUID } from "binary-uuid";
 
 export const getHistorial = async (req, res) => {
   try {
@@ -11,7 +10,7 @@ export const getHistorial = async (req, res) => {
     if (result.length === 0)
       return res.status(404).json({ message: "historial no encontrado" });
     res.json(result[0]);
-  } catch(error) {
+  } catch (error) {
     return res.status(500).json({ message: error.message });
   }
 };
@@ -19,11 +18,12 @@ export const createHistorial = async (req, res) => {
   const idSesion = fromBinaryUUID(req.user.usuario_id);
   try {
     const { descripcion, id_doctor } = req.body;
-    const newLink = { descripcion, id_paciente:idSesion, id_doctor };
-    const result = await pool.query("INSERT INTO historiales_clinicos (descripcion, id_paciente, id_doctor) VALUES (?,UUID_TO_BIN(?),?)", [
-      newLink.descripcion, newLink.id_paciente,newLink.id_doctor
-    ]);
-    console.log(result);
+    const newLink = { descripcion, id_paciente: idSesion, id_doctor };
+    const result = await pool.query(
+      "INSERT INTO historiales_clinicos (descripcion, id_paciente, id_doctor) VALUES (?,UUID_TO_BIN(?),?)",
+      [newLink.descripcion, newLink.id_paciente, newLink.id_doctor]
+    );
+
     res.send("creando historial");
   } catch {
     return res.status(500).json({ message: error.message });
@@ -31,14 +31,17 @@ export const createHistorial = async (req, res) => {
 };
 export const updateHistorial = async (req, res) => {
   try {
-    console.log(req.params.id,req.body,"pretty loveee")
-
     const result = await pool.query(
       "UPDATE historiales_clinicos SET fecha_reg_hist=?, descripcion=?,id_doctor=UUID_TO_BIN(?) WHERE BIN_TO_UUID(id_paciente) = ?",
-      [req.body.fecha_reg_hist,req.body.descripcion,req.body.id_doctor, req.params.id]
+      [
+        req.body.fecha_reg_hist,
+        req.body.descripcion,
+        req.body.id_doctor,
+        req.params.id,
+      ]
     );
     res.json(result);
-  } catch (error){
+  } catch (error) {
     return res.status(500).json({ message: error.message });
   }
 };

@@ -10,8 +10,6 @@ import {
   FormControl,
   InputLabel,
   MenuItem,
-  styled,
-  InputBase,
   Autocomplete,
 } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -27,33 +25,17 @@ function RegistroForm() {
       const uinfo = await getDepartamentos();
       sedepartamentosre(uinfo.data);
       sedepartamentosna(uinfo.data);
-
-      // const uinfo4 = await getCiudades(5);
-      // console.log(uinfo4.data);
-      // console.log(uinfo.data, "info normi");
     };
     getdepInfo();
   }, []);
   const validationSchema = Yup.object().shape({
     nombre_completo: Yup.string().required("Ingrese su nombre completo"),
-    // tipo_identificacion: Yup.string().required(
-    //   "Seleccione un tipo de identifcacion"
-    // ),
     num_identificacion: Yup.number()
       .typeError("Solo valores numericos")
       .required("Obligatorio"),
-    // fecha_nacimiento: Yup.string().required(
-    //   "Seleccione su fecha de nacimiento"
-    // ),
     genero: Yup.string().required("Ingrese su genero"),
     nacionalidad: Yup.string().required("Obligatorio"),
-    // id_ciudad_nac: Yup.string().required("Seleccione su ciudad de nacimiento"),
-    //departamento_nac: Yup.string().required("Obligatorio"),
     pais_nac: Yup.string().required("Obligatorio"),
-    //  id_ciudad_resi: Yup.string().required("Seleccione su ciudad de nacimiento"),
-    // id_dep_resi: Yup.string().required(
-    //   "Seleccione su departamento de nacimiento"
-    // ),
     pais_res: Yup.string().required("Obligatorio"),
     direccion: Yup.string().required("Ingrese su direccion de residencia"),
     num_tel_celular: Yup.number()
@@ -67,7 +49,6 @@ function RegistroForm() {
   const { correo, contraseña } = state;
   //popup
   const [openPopup, setOpenPopup] = useState(false);
-  console.log(correo, contraseña, "pasinfruit");
   //set de los values
   const [value, setValue] = useState(new Date());
   const today = new Date();
@@ -113,15 +94,12 @@ function RegistroForm() {
   //funciones
   const getcities = async (val) => {
     const uinfo4 = await getCiudades(val);
-    console.log(uinfo4.data, "inposhilbe");
     setciudadesre(uinfo4.data);
-    // console.log(uinfo.data, "info normi");
   };
   const getcities2 = async (val) => {
     const uinfo4 = await getCiudades(val);
-    console.log(uinfo4.data, "inposhilbe");
+
     setciudadesna(uinfo4.data);
-    // console.log(uinfo.data, "info normi");
   };
 
   function formatDate(date) {
@@ -138,44 +116,10 @@ function RegistroForm() {
       const response = await SignUpUser(userI);
 
       navigate("/inicio");
-      console.log(response, "respuesta a la epticion en el signup");
     } catch (error) {
       console.log(error);
     }
   };
-
-  // const options = [
-  //   { value: "2", label: "carro" },
-  //   { value: "3", label: "moto" },
-  //   { value: "4", label: "bici" },
-  //   { value: "5", label: "bici" },
-  //   { value: "6", label: "dmoto opera" },
-  //   { value: "7", label: "dhijuepuuta" },
-  //   { value: "8", label: "fcarro montero cuarentai" },
-  //   { value: "9", label: "fmoto opera" },
-  //   { value: "10", label: "fhijuepuuta" },
-  //   { value: "option12", label: "gcarro montero cuarentai" },
-  //   { value: "option22", label: "gmoto opera" },
-  //   { value: "option32", label: "ghijuepuuta" },
-  //   { value: "option13", label: "hcarro montero cuarentai" },
-  //   { value: "option23", label: "hmoto opera" },
-  //   { value: "option33", label: "hhijuepuuta" },
-  //   { value: "option14", label: "cjarro montero cuarentai" },
-  //   { value: "option24", label: "jmoto opera" },
-  //   { value: "option35", label: "jhijuepuuta" },
-  // ];
-  console.log(UsuarioInfo, "eldiaablo");
-
-  //console.log(departamentos)
-  //console.log(value, "fecha");
-  // console.log(
-  //   depSelectedre,
-  //   ciuSelectedre,
-  //   depSelectedna,
-  //   ciuSelectedna,
-  //   "ambos datos"
-  // );
-  // console.log(ciudadesrere, "arreglo de ciudades");
 
   return (
     <div className="form-reg-p">
@@ -219,7 +163,6 @@ function RegistroForm() {
               direccion: "",
               num_tel_celular: "",
               num_tel_fijo: "",
-              //id_nu: "fdfdfdf",
             }}
             validationSchema={validationSchema}
             onSubmit={(values) => {
@@ -228,7 +171,7 @@ function RegistroForm() {
               values.tipo_identificacion = idValue;
               values.id_ciudad_nac = ciuSelectedna.value;
               values.id_ciudad_resi = ciuSelectedre.value;
-              console.log(values);
+
               setUsuarioInfo({
                 nombre_completo: values.nombre_completo,
                 correo: values.correo,
@@ -246,7 +189,6 @@ function RegistroForm() {
                 num_tel_celular: values.num_tel_celular,
                 num_tel_fijo: values.num_tel_fijo,
               });
-              console.log(UsuarioInfo, "eldiaablo");
             }}
           >
             {({ handleChange, handleSubmit, handleBlur, touched, errors }) => (
@@ -258,7 +200,8 @@ function RegistroForm() {
                     <div>
                       <TextField
                         name="nombre_completo"
-                        label="nombre completo"
+                        label="Nombre completo"
+                        size="small"
                         id="outlined-start-adornment"
                         InputLabelProps={{
                           classes: {
@@ -289,8 +232,9 @@ function RegistroForm() {
                         }
                       />
                       <TextField
-                        label="correo electronico"
+                        label="Correo electrónico"
                         name="correo"
+                        size="small"
                         disabled
                         id="outlined-start-adornment"
                         InputLabelProps={{
@@ -317,19 +261,19 @@ function RegistroForm() {
 
                       <FormControl
                         focused
+                        size="small"
                         sx={{
                           marginTop: "10%",
                           marginLeft: "2%",
-                          width: "20%",
+                          width: "23%",
                           height: "15%",
                         }}
-                      
                       >
                         <InputLabel
                           className="iiiii"
                           id="demo-simple-select-label"
                         >
-                          Tipo Id
+                          Tipo ID
                         </InputLabel>
                         <Select
                           name="tipo_identificacion"
@@ -363,11 +307,11 @@ function RegistroForm() {
                           </MenuItem>
                           <MenuItem value={"Pasaporte"}>PS</MenuItem>
                         </Select>
-                     
                       </FormControl>
 
                       <TextField
                         label="Número identificación"
+                        size="small"
                         id="outlined-start-adornment"
                         InputLabelProps={{
                           classes: {
@@ -403,6 +347,7 @@ function RegistroForm() {
 
                       <DatePicker
                         name="fecha_nacimiento"
+                        size="small"
                         label="fecha de nacimiento"
                         maxDate={today}
                         format="yyyy-MM-dd"
@@ -411,32 +356,30 @@ function RegistroForm() {
                             focused: "my-custom-focus-label",
                           },
                         }}
+                        slotProps={{ textField: { size: "small" } }}
                         InputProps={{
                           classes: {
                             focused: "my-custom-focus-class",
                           },
                         }}
-                        // value={value}
-                        // onChange={(value)=>setValue()}
                         value={value}
                         onChange={(newValue) => {
                           setValue(newValue);
                         }}
                         onSubmit={handleChange}
-                        // handleChange={handleChange}
                         sx={{
                           m: 0,
                           marginTop: "10%",
                           marginLeft: "2%",
                           color: "biomedical.green",
                           width: "43%",
-                          height: "15%",
                         }}
                         focused
                       />
 
                       <TextField
                         label="Género"
+                        size="small"
                         id="outlined-start-adornment"
                         name="genero"
                         InputLabelProps={{
@@ -449,13 +392,12 @@ function RegistroForm() {
                             focused: "my-custom-focus-class",
                           },
                         }}
-                        //name="genero"
                         onChange={handleChange}
                         sx={{
                           m: 0,
                           marginTop: "10%",
                           marginLeft: "2%",
-                          width: "43%",
+                          width: "44%",
                           height: "15%",
                         }}
                         focused
@@ -473,6 +415,7 @@ function RegistroForm() {
                     <div>
                       <TextField
                         label="Nacionalidad"
+                        size="small"
                         id="outlined-start-adornment"
                         InputLabelProps={{
                           classes: {
@@ -502,7 +445,7 @@ function RegistroForm() {
                       />
                       <TextField
                         label="País de nacimiento"
-                        // id="outlined-start-adornment"
+                        size="small"
                         InputLabelProps={{
                           classes: {
                             focused: "my-custom-focus-label",
@@ -546,21 +489,18 @@ function RegistroForm() {
                         }
                         value={depSelectedna}
                         onChange={(event, newValue) => {
-                          if(newValue){
+                          if (newValue) {
                             getcities2(newValue.value);
                             setdepSelectedna(newValue);
-
                           }
-                          console.log(newValue, "mirahalssss");
                         }}
                         renderInput={(params) => (
                           <TextField
-                          
                             {...params}
                             label="Departamento nacimiento"
-                            //name="departamento_nac"
                             variant="outlined"
                             focused
+                            size="small"
                             InputLabelProps={{
                               classes: {
                                 focused: "my-custom-focus-label",
@@ -580,15 +520,11 @@ function RegistroForm() {
                           height: "15%",
                           display: "-webkit-inline-box",
                         }}
-                       
                         isOptionEqualToValue={(option, ciuSelectedna) =>
                           option.value === ciuSelectedna.value
                         }
                         value={ciuSelectedna}
-                        
                         onChange={(event, newValue) => {
-                          // getcities(newValue.value);
-                           console.log(newValue, "miralooooo");
                           setciuSelectedna(newValue);
                         }}
                         renderInput={(params) => (
@@ -597,6 +533,7 @@ function RegistroForm() {
                             label="ciudad nacimiento"
                             variant="outlined"
                             focused
+                            size="small"
                             InputLabelProps={{
                               classes: {
                                 focused: "my-custom-focus-label",
@@ -607,7 +544,7 @@ function RegistroForm() {
                       />
                       <TextField
                         label="País de residencia"
-                        //id="outlined-start-adornment"
+                        size="small"
                         InputLabelProps={{
                           classes: {
                             focused: "my-custom-focus-label",
@@ -649,15 +586,10 @@ function RegistroForm() {
                         }
                         value={depSelectedre}
                         onChange={(event, newValue) => {
-                          if(newValue){
+                          if (newValue) {
                             getcities(newValue.value);
                             setdepSelectedre(newValue);
-
                           }
-                          console.log(
-                            newValue,
-                            "mira departmanto residencia selected"
-                          );
                         }}
                         renderInput={(params) => (
                           <TextField
@@ -666,6 +598,7 @@ function RegistroForm() {
                             label="Departamento residencia"
                             variant="outlined"
                             focused
+                            size="small"
                             InputLabelProps={{
                               classes: {
                                 focused: "my-custom-focus-label",
@@ -685,20 +618,11 @@ function RegistroForm() {
                           height: "15%",
                           display: "-webkit-inline-box",
                         }}
-                        //defaultValue={{value: 15, label: 'BOYACÁ'}}
-                        //getOptionLabel={(option) => option.label}
                         isOptionEqualToValue={(option, ciuSelectedre) =>
                           option.value === ciuSelectedre.value
                         }
                         value={ciuSelectedre}
-                        // onClick={async () => {
-                        //   const uinfo = await getCiudades(5);
-                        //   console.log(uinfo.data);
-                        //   // console.log(uinfo.data, "info normi");
-                        // }}
                         onChange={(event, newValue) => {
-                          // getcities(newValue.value);
-                          // console.log(newValue.value, "mira");
                           setciuSelectedre(newValue);
                         }}
                         renderInput={(params) => (
@@ -707,6 +631,7 @@ function RegistroForm() {
                             label="ciudad residencia"
                             variant="outlined"
                             focused
+                            size="small"
                             InputLabelProps={{
                               classes: {
                                 focused: "my-custom-focus-label",
@@ -726,6 +651,7 @@ function RegistroForm() {
                       <TextField
                         label="Direccion de residencia"
                         id="outlined-start-adornment"
+                        size="small"
                         InputLabelProps={{
                           classes: {
                             focused: "my-custom-focus-label",
@@ -753,6 +679,7 @@ function RegistroForm() {
                       <TextField
                         label="Teléfono móvil"
                         id="outlined-start-adornment"
+                        size="small"
                         InputLabelProps={{
                           classes: {
                             focused: "my-custom-focus-label",
@@ -785,6 +712,7 @@ function RegistroForm() {
                       <TextField
                         label="Teléfono fíjo"
                         id="outlined-start-adornment"
+                        size="small"
                         InputLabelProps={{
                           classes: {
                             focused: "my-custom-focus-label",
@@ -809,7 +737,7 @@ function RegistroForm() {
                       <Button
                         variant="contained"
                         type="submit"
-                        //onSubmit={onSubmit1}
+                        size="small"
                         sx={{
                           width: "50%",
                           color: "biomedical.white",
@@ -819,7 +747,7 @@ function RegistroForm() {
                           marginTop: "12%",
                           marginLeft: "36%",
                           ":hover": {
-                            bgcolor: "biomedical3.blue", // theme.palette.primary.main
+                            bgcolor: "biomedical3.blue",
                             color: "white",
                           },
                         }}
@@ -851,7 +779,7 @@ function RegistroForm() {
                               fontSize: "14px",
                               margin: 0,
                               ":hover": {
-                                bgcolor: "biomedical3.blue", // theme.palette.primary.main
+                                bgcolor: "biomedical3.blue",
                                 color: "white",
                               },
                             }}
@@ -860,8 +788,6 @@ function RegistroForm() {
                           </Button>
                           <Button
                             variant="contained"
-                            //type="submit"
-                            //onClick={async () => await SignUpUser(UsuarioInfo)}
                             onClick={() => handleSignUpUser(UsuarioInfo)}
                             form="form-registro-p"
                             sx={{
@@ -872,7 +798,7 @@ function RegistroForm() {
                               margin: 0,
 
                               ":hover": {
-                                bgcolor: "biomedical3.blue", // theme.palette.primary.main
+                                bgcolor: "biomedical3.blue",
                                 color: "white",
                               },
                             }}

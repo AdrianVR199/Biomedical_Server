@@ -1,6 +1,5 @@
 import { Router } from "express";
 import passport from "passport";
-//import { signIn, signUp, getPerfil } from "../controllers/auth.controllers.js";
 import { auth } from "../lib/auth.js";
 const router = Router();
 import pool from "../db.js";
@@ -19,7 +18,6 @@ router.post("/auth/signup", (req, res, next) => {
 });
 router.post("/auth/signin", (req, res, next) => {
   passport.authenticate("local.signin", (err, user, info) => {
-    console.log(user, req.user,err,"finura29");
     if (err) throw err;
     if (!user) res.send({ error: info.message });
     else {
@@ -32,7 +30,6 @@ router.post("/auth/signin", (req, res, next) => {
 });
 router.get("/userinfo", auth.isLoggedIn, (req, res) => {
   res.send(req.user);
-  //console.log(req.user.usuario_id, "info del usuario enviada al front");
 });
 
 //nuevo endpoint datos del usuario
@@ -64,7 +61,6 @@ router.post("/logout", function (req, res, next) {
       return next(err);
     }
     res.send("Successfully logedoutmai");
-    console.log(req.user, "Successfully logedoutmai");
   });
 });
 

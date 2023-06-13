@@ -33,75 +33,83 @@
 }
 
 .P-img-perfil {
-    height: 80px;
+  height: 80px;
   width: 80px;
-  
+
   object-fit: cover;
   border-radius: 50%;
 }
-.P-form-head{
-    display: flex;
-    align-items: center;
-    width: 90%;
-    height: 25%;
-    margin-left: 5%;
-   
+.P-form-head {
+  display: flex;
+  align-items: center;
+  width: 90%;
+  height: 25%;
+  margin-left: 5%;
 }
 
-.P-titulos-reg{
-    display: flex;
-      width: 90%;
-      justify-content: space-around;
-      height: 10%;
-      margin-top: 0;
-      margin-bottom: 0;
-      margin-left: 5%;
-      align-items: center;
-  }
+.P-titulos-reg {
+  display: flex;
+  width: 90%;
+  justify-content: space-around;
+  height: 10%;
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-left: 5%;
+  align-items: center;
+}
 
 .P-form-reg {
-    height: 65%;
-    width: 90%;
-    background-color: rgb(255, 255, 255);
-    margin-left: 5%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+  height: 65%;
+  width: 90%;
+  background-color: rgb(255, 255, 255);
+  margin-left: 5%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-  .P-form-reg Form {
-    height: 100%;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-  }
+.P-form-reg Form {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
 
 .P-form-reg-p {
-    display: flex;
-    height: 100%;
-    width: 100%;
-    position: fixed;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+  display: flex;
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-  .P-bfield-n{
-    margin: 0;
-    border-right: 1.5px solid #BDD258;
-  }
+.P-bfield-n {
+  padding-right: 15px;
+  margin: 0;
+  border-right: 1.5px solid #bdd258;
+}
 
-  .P-reg-input-bfield {
-    width: 30%;
-    height: 88%;
-   
-  }
-  .P-bfild2{
-    width: 35%;
-  }
+.P-reg-input-bfield {
+  width: 30%;
+  height: 88%;
+}
+.P-bfild2 {
+  width: 35%;
+}
 
-  /* @media (max-width: 1150px){
-    .MuiTextField-root{
-      size:small !important;
-    }
-  } */
+.botones-perfil {
+  display: flex;
+  justify-content: space-between;
+  width: 87%;
+  margin-top: 10%;
+  column-gap: 1px;
+}
+
+@media (max-width: 1150px) {
+  .botones-perfil {
+    flex-direction: column;
+    gap: 2px;
+  }
+}

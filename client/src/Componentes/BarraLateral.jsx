@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/App.css";
 import logoBiomedical from "../assets/Logo_orizontal.png";
@@ -15,7 +15,28 @@ import imgprofile from '../assets/Recurso 1@4x-100.jpg'
 function BarraLateral({ user }) {
   const { cerrarSesion } = useAppContext();
   const navigate = useNavigate();
-
+  const [selectedButton, setSelectedButton] = useState(null);
+  const handleButtonClick = (buttonName) => {
+    setSelectedButton(buttonName);
+    
+    // Llamar a la función de navegación personalizada según el botón seleccionado
+    switch (buttonName) {
+      case 'button1':
+       // navigateToPage1(); // Función de navegación para el botón 1
+        break;
+      case 'button2':
+        //navigateToPage2(); // Función de navegación para el botón 2
+        break;
+      case 'button3':
+        //navigateToPage3(); // Función de navegación para el botón 3
+        break;
+      case 'button4':
+        //navigateToPage4(); // Función de navegación para el botón 4
+        break;
+      default:
+        break;
+    }
+  };
   return (
     <div className="barra-lateral">
       <div style={{ paddingTop: "5%" }} className="barra-lat-info">
@@ -131,7 +152,7 @@ function BarraLateral({ user }) {
                   height: "40px",
                 }}
               >
-                Perfil
+                Mi Perfil
               </Button>
             </li>
           </ul>

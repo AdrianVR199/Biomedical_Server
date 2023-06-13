@@ -6,8 +6,6 @@ import { Button } from "@mui/material";
 import {
   ExitToApp,
   HomeOutlined,
-  TextSnippetOutlined,
-  PendingActionsOutlined,
   PeopleOutline,
   PersonOutlineOutlined,
 } from "@mui/icons-material";

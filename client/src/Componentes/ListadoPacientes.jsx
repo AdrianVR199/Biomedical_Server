@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, esES } from "@mui/x-data-grid";
 
 import { PersonSearch } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
@@ -7,15 +7,16 @@ import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/ContextProvider";
 
 function ListadoPacientes() {
-  const { getUsuarios } = useAppContext();
+  const { getUsuarios, getUsuarioinfo } = useAppContext();
   const [listPacientes, setlistPacientes] = useState([]);
   const navigate = useNavigate();
-
+  const [userID, setuserID] = useState("");
   useEffect(() => {
     const getlistPacientes = async () => {
       const contentlist = await getUsuarios();
-
+      const dataUser = await getUsuarioinfo();
       setlistPacientes(contentlist);
+      setuserID(dataUser.data.id_tipo_usuario);
     };
     getlistPacientes();
   }, []);
@@ -28,16 +29,17 @@ function ListadoPacientes() {
     col4: item.correo,
   }));
 
-
   const handleButtonClick = (params, list) => {
     const rowData = params.row;
     const objetoEncontrado = list.find(
       (objeto) => objeto.usuario_id === rowData.id
     );
     if (objetoEncontrado) {
-    
-
-      navigate(`/paciente/${objetoEncontrado.usuario_id}`);
+      if (userID === 2) {
+        navigate(`/paciente/${objetoEncontrado.usuario_id}`);
+      } else {
+        navigate(`/Perfilpaciente/${objetoEncontrado.usuario_id}`);
+      }
     }
   };
 
@@ -45,28 +47,28 @@ function ListadoPacientes() {
     {
       field: "col1",
       headerName: "Nombre",
-      width: 280,
+      flex: 1,
       align: "left",
       headerAlign: "center",
     },
     {
       field: "col2",
       headerName: "Documento",
-      width: 150,
+      flex: 1,
       align: "center",
       headerAlign: "center",
     },
     {
       field: "col3",
       headerName: "Teléfono móvil",
-      width: 200,
+      flex: 1,
       align: "center",
       headerAlign: "center",
     },
     {
       field: "col4",
       headerName: "Correo electrónico",
-      width: 270,
+      flex: 1,
       align: "center",
       headerAlign: "center",
     },
@@ -74,7 +76,7 @@ function ListadoPacientes() {
       field: "col5",
       align: "center",
       headerName: "Ver paciente",
-      width: 90,
+
       renderCell: (params) => (
         <PersonSearch
           style={{ cursor: "pointer" }}
@@ -91,13 +93,13 @@ function ListadoPacientes() {
     >
       <DataGrid
         rows={rows1.reverse()}
+        localeText={esES.components.MuiDataGrid.defaultProps.localeText}
         columns={columns}
         hideFooterSelectedRowCount
-        hide
         initialState={{
-          pagination: { paginationModel: { pageSize: 8 } },
+          pagination: { paginationModel: { pageSize: 10 } },
         }}
-        pageSizeOptions={[8]}
+        pageSizeOptions={[10, 20, 50, 100]}
       />
     </div>
   );

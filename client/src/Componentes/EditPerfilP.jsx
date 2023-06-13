@@ -15,7 +15,7 @@ import Popup from "./Popup";
 import { useNavigate } from "react-router-dom";
 import { DatePicker } from "@mui/x-date-pickers";
 import { useAppContext } from "../context/ContextProvider";
-import imgprofile from '../assets/Recurso 1@4x-100.jpg'
+import imgprofile from "../assets/Recurso 1@4x-100.jpg";
 
 function EditPerfilP() {
   const { getUsuarioinfo, updateUsuario, getDepartamentos, getCiudades } =
@@ -45,10 +45,10 @@ function EditPerfilP() {
         label: uinfo.data.ciudad_res,
       });
       const uinfo4 = await getCiudades(uinfo.data.depa_res_id);
-     
+
       setciudadesre(uinfo4.data);
       const uinfo5 = await getCiudades(uinfo.data.dep_nac_id);
-   
+
       setciudadesna(uinfo5.data);
       const uinfod = await getDepartamentos();
       sedepartamentosre(uinfod.data);
@@ -56,7 +56,6 @@ function EditPerfilP() {
     };
 
     getuserinfo();
-
   }, []);
   const [usuario, setUsuario] = useState(""); //informacion del usuario desde la base de datos
   const [openPopup, setOpenPopup] = useState(false); //estado del popup
@@ -110,15 +109,13 @@ function EditPerfilP() {
   //funciones
   const getcities = async (val) => {
     const uinfo4 = await getCiudades(val);
-   
+
     setciudadesre(uinfo4.data);
-  
   };
   const getcities2 = async (val) => {
     const uinfo4 = await getCiudades(val);
-    
+
     setciudadesna(uinfo4.data);
-   
   };
   function formatDate(date) {
     const year = date.getFullYear();
@@ -144,15 +141,13 @@ function EditPerfilP() {
     values.tipo_identificacion = idValue;
     values.id_ciudad_nac = ciuSelectedna.value;
     values.id_ciudad_resi = ciuSelectedre.value;
-   
+
     Object.keys(values).forEach((key) => {
       if (values[key] !== usuario[key]) {
         changedFields[key] = values[key];
-  
       }
       setuserChanged(changedFields);
     });
-  
 
     // Aquí puedes enviar los campos cambiados al servidor
   };
@@ -161,13 +156,10 @@ function EditPerfilP() {
       const response = await updateUsuario(userid, newfields);
       if (usuario.id_tipo_usuario === 1) {
         navigate("/paciente/perfil");
-        console.log(response, "paciente actualizado");
       } else if (usuario.id_tipo_usuario === 2) {
         navigate("/medico/perfil");
-        console.log(response, "medico actualizado");
-      } else if(usuario.id_tipo_usuario === 3) {
+      } else if (usuario.id_tipo_usuario === 3) {
         navigate("/recepcionista/perfil");
-        console.log(response, "recepcionista actualizado");
       }
     } catch (error) {
       console.log(error);
@@ -178,22 +170,18 @@ function EditPerfilP() {
     <div style={{ height: "100%" }}>
       <div className="P-form-head">
         <div style={{ width: "12%" }}>
-          <img
-            className="P-img-perfil"
-            src={imgprofile}
-            alt=""
-          />
+          <img className="P-img-perfil" src={imgprofile} alt="" />
         </div>
-        <div style={{ width: "68%" }}>
+        <div style={{ width: "57%" }}>
           <h1 style={{ fontSize: "20px" }}>Detalles de mi perfil</h1>
-          <p style={{ fontSize: "16px" }}>
-            En este apartado puedes observar tus datos personales y
-            actualizarlos en cualquier momento.
+          <p style={{ fontSize: "15px" }}>
+            Después de asegurarte que la información está correcta, da clic en
+            confirmar cambios para guardar los nuevos datos de tu perfil.
           </p>
         </div>
         <div
           style={{
-            width: "20%",
+            width: "27%",
             display: "flex",
             justifyContent: "flex-end",
             alignItems: "flex-end",
@@ -201,23 +189,22 @@ function EditPerfilP() {
         >
           <Button
             variant="contained"
-            onClick={() => setOpenPopup1(true)}
-            form="form-registro-p"
+            type="submit"
+            form="P-form-registro-p"
             sx={{
-              width: "75%",
+              width: "80%",
               height: "50%",
               color: "biomedical.white",
               backgroundColor: "biomedical.blue",
               fontSize: "14px",
               margin: 0,
-
               ":hover": {
-                bgcolor: "biomedical3.blue", // theme.palette.primary.main
+                bgcolor: "biomedical3.blue",
                 color: "white",
               },
             }}
           >
-            Eliminar perfil
+            Confirmar cambios
           </Button>
         </div>
       </div>
@@ -252,13 +239,14 @@ function EditPerfilP() {
           onSubmit={handleSubmit}
         >
           {({ handleChange, handleSubmit, values }) => (
-            <Form onSubmit={handleSubmit} id="P-form-registro-p">
+            <Form id="P-form-registro-p">
               <div className="P-reg-input-bfield P-bfield-n">
                 <Box sx={{ display: "flex", flexWrap: "wrap", height: "100%" }}>
                   <div>
                     <TextField
                       name="nombre_completo"
-                      label="nombre completo"
+                      label="Nombre completo"
+                      size="small"
                       id="outlined-start-adornment"
                       InputLabelProps={{
                         classes: {
@@ -282,7 +270,9 @@ function EditPerfilP() {
                       focused
                     />
                     <TextField
-                      label="correo electronico"
+                      label="Correo electrónico"
+                      size="small"
+                      disabled
                       name="correo"
                       id="outlined-start-adornment"
                       InputLabelProps={{
@@ -308,19 +298,19 @@ function EditPerfilP() {
                     />
 
                     <FormControl
-                      // focused
                       sx={{
                         marginTop: "10%",
                         marginLeft: "2%",
-                        width: "25%",
+                        width: "30%",
                         height: "15%",
                       }}
+                      size="small"
                     >
                       <InputLabel
                         className="iiiii"
                         id="demo-simple-select-label"
                       >
-                        Tipo Id
+                        Tipo ID
                       </InputLabel>
                       <Select
                         name="tipo_identificacion"
@@ -332,7 +322,7 @@ function EditPerfilP() {
                         onChange={handleChangeid}
                       >
                         <MenuItem value={"Cedula de ciudadania"}>C.C</MenuItem>
-                        {/* <MenuItem value={""}></MenuItem> */}
+
                         <MenuItem value={"C.C"}>C.C</MenuItem>
                         <MenuItem value={"Tarjeta de identidad"}>T.I</MenuItem>
                         <MenuItem value={"Pasaporte"}>PS</MenuItem>
@@ -342,6 +332,7 @@ function EditPerfilP() {
                     <TextField
                       label="Número identificación"
                       id="outlined-start-adornment"
+                      size="small"
                       InputLabelProps={{
                         classes: {
                           focused: "my-custom-focus-label",
@@ -359,7 +350,7 @@ function EditPerfilP() {
                         m: 0,
                         marginTop: "10%",
                         marginLeft: "2%",
-                        width: "45%",
+                        width: "57%",
                         height: "15%",
                       }}
                       variant="outlined"
@@ -367,8 +358,7 @@ function EditPerfilP() {
                     />
 
                     <DatePicker
-                      // name="fecha_nac"
-                      label="fecha de nacimiento"
+                      label="Fecha de nacimiento"
                       name="fecha_nacimiento"
                       format="yyyy-MM-dd"
                       InputLabelProps={{
@@ -376,24 +366,22 @@ function EditPerfilP() {
                           focused: "my-custom-focus-label",
                         },
                       }}
+                      slotProps={{ textField: { size: "small" } }}
                       InputProps={{
                         classes: {
                           focused: "my-custom-focus-class",
                         },
                       }}
-                      // value={value}
-                      // onChange={(value)=>setValue()}
                       value={value}
                       onChange={(newValue) => {
                         setValue(newValue);
                       }}
-                      // handleChange={handleChange}
                       sx={{
                         m: 0,
                         marginTop: "10%",
                         marginLeft: "2%",
                         color: "biomedical.green",
-                        width: "48%",
+                        width: "43%",
                         height: "15%",
                       }}
                       focused
@@ -402,6 +390,7 @@ function EditPerfilP() {
                     <TextField
                       label="Género"
                       id="outlined-start-adornment"
+                      size="small"
                       InputLabelProps={{
                         classes: {
                           focused: "my-custom-focus-label",
@@ -419,7 +408,7 @@ function EditPerfilP() {
                         m: 0,
                         marginTop: "10%",
                         marginLeft: "2%",
-                        width: "38%",
+                        width: "43%",
                         height: "15%",
                       }}
                       focused
@@ -432,6 +421,7 @@ function EditPerfilP() {
                   <div>
                     <TextField
                       label="Nacionalidad"
+                      size="small"
                       id="outlined-start-adornment"
                       InputLabelProps={{
                         classes: {
@@ -457,6 +447,7 @@ function EditPerfilP() {
                     />
                     <TextField
                       label="País de nacimiento"
+                      size="small"
                       id="outlined-start-adornment"
                       InputLabelProps={{
                         classes: {
@@ -499,15 +490,16 @@ function EditPerfilP() {
                       value={depSelectedna}
                       onChange={(event, newValue) => {
                         getcities2(newValue.value);
-                     
+
                         setdepSelectedna(newValue);
                       }}
                       renderInput={(params) => (
                         <TextField
                           sx={{ m: 0 }}
                           {...params}
-                          label="Departamento nacimiento"
+                          label="Departamento de nacimiento"
                           variant="outlined"
+                          size="small"
                           focused
                           InputLabelProps={{
                             classes: {
@@ -528,21 +520,19 @@ function EditPerfilP() {
                         height: "15%",
                         display: "-webkit-inline-box",
                       }}
-               
                       isOptionEqualToValue={(option, ciuSelectedna) =>
                         option.value === ciuSelectedna.value
                       }
                       value={ciuSelectedna}
-                    
                       onChange={(event, newValue) => {
-                   
                         setciuSelectedna(newValue);
                       }}
                       renderInput={(params) => (
                         <TextField
                           {...params}
-                          label="ciudad nacimiento"
+                          label="Ciudad de nacimiento"
                           variant="outlined"
+                          size="small"
                           focused
                           InputLabelProps={{
                             classes: {
@@ -552,59 +542,11 @@ function EditPerfilP() {
                         />
                       )}
                     />
-                    {/* <TextField
-                      label="Departamento de nacimiento"
-                      id="outlined-start-adornment"
-                      InputLabelProps={{
-                        classes: {
-                          focused: "my-custom-focus-label",
-                        },
-                      }}
-                      InputProps={{
-                        classes: {
-                          focused: "my-custom-focus-class",
-                        },
-                      }}
-                      name="dep_nac"
-                      onChange={handleChange}
-                      value={values.dep_nac || ""}
-                      sx={{
-                        m: 0,
-                        marginTop: "10%",
-                        marginLeft: "2%",
-                        width: "45%",
-                        height: "15%",
-                      }}
-                      focused
-                    />
-                    <TextField
-                      label="Ciudad de nacimiento"
-                      id="outlined-start-adornment"
-                      InputLabelProps={{
-                        classes: {
-                          focused: "my-custom-focus-label",
-                        },
-                      }}
-                      InputProps={{
-                        classes: {
-                          focused: "my-custom-focus-class",
-                        },
-                      }}
-                      name="ciudad_nac"
-                      onChange={handleChange}
-                      value={values.ciudad_nac || ""}
-                      sx={{
-                        m: 0,
-                        marginTop: "10%",
-                        marginLeft: "2%",
-                        width: "45%",
-                        height: "15%",
-                      }}
-                      focused
-                    /> */}
+
                     <TextField
                       label="País de residencia"
                       id="outlined-start-adornment"
+                      size="small"
                       InputLabelProps={{
                         classes: {
                           focused: "my-custom-focus-label",
@@ -629,7 +571,6 @@ function EditPerfilP() {
                     />
                     <Autocomplete
                       options={OptionsDepartamentosre}
-                      // defaultChecked={values.depa_res}
                       sx={{
                         m: 0,
                         position: "relative",
@@ -645,15 +586,16 @@ function EditPerfilP() {
                       value={depSelectedre}
                       onChange={(event, newValue) => {
                         getcities(newValue.value);
-                   
+
                         setdepSelectedre(newValue);
                       }}
                       renderInput={(params) => (
                         <TextField
                           sx={{ m: 0 }}
                           {...params}
-                          label="Departamento residencia"
+                          label="Departamento de residencia"
                           variant="outlined"
+                          size="small"
                           focused
                           InputLabelProps={{
                             classes: {
@@ -668,28 +610,26 @@ function EditPerfilP() {
                       sx={{
                         m: 0,
                         position: "relative",
-                        marginTop: "8%",
+                        marginTop: "10%",
                         marginLeft: "2%",
                         width: "45%",
                         height: "15%",
                         display: "-webkit-inline-box",
                       }}
-               
                       isOptionEqualToValue={(option, ciuSelectedre) =>
                         option.value === ciuSelectedre.value
                       }
                       value={ciuSelectedre}
-                
                       onChange={(event, newValue) => {
-                      
                         setciuSelectedre(newValue);
                       }}
                       renderInput={(params) => (
                         <TextField
                           {...params}
-                          label="ciudad residencia"
+                          label="Ciudad de residencia"
                           variant="outlined"
                           focused
+                          size="small"
                           InputLabelProps={{
                             classes: {
                               focused: "my-custom-focus-label",
@@ -698,56 +638,6 @@ function EditPerfilP() {
                         />
                       )}
                     />
-                    {/* <TextField
-                      label="Departamento de residencia"
-                      id="outlined-start-adornment"
-                      InputLabelProps={{
-                        classes: {
-                          focused: "my-custom-focus-label",
-                        },
-                      }}
-                      InputProps={{
-                        classes: {
-                          focused: "my-custom-focus-class",
-                        },
-                      }}
-                      name="depa_res"
-                      onChange={handleChange}
-                      value={values.depa_res || ""}
-                      sx={{
-                        m: 0,
-                        marginTop: "10%",
-                        marginLeft: "2%",
-                        width: "45%",
-                        height: "15%",
-                      }}
-                      focused
-                    />
-                    <TextField
-                      label="Ciudad de residencia"
-                      id="outlined-start-adornment"
-                      InputLabelProps={{
-                        classes: {
-                          focused: "my-custom-focus-label",
-                        },
-                      }}
-                      InputProps={{
-                        classes: {
-                          focused: "my-custom-focus-class",
-                        },
-                      }}
-                      name="ciudad_res"
-                      onChange={handleChange}
-                      value={values.ciudad_res || ""}
-                      sx={{
-                        m: 0,
-                        marginTop: "8%",
-                        marginLeft: "2%",
-                        width: "45%",
-                        height: "15%",
-                      }}
-                      focused
-                    /> */}
                   </div>
                 </Box>
               </div>
@@ -755,8 +645,9 @@ function EditPerfilP() {
                 <Box sx={{ display: "flex", flexWrap: "wrap", height: "100%" }}>
                   <div>
                     <TextField
-                      label="Direccion de residencia"
+                      label="Dirección de residencia"
                       id="outlined-start-adornment"
+                      size="small"
                       InputLabelProps={{
                         classes: {
                           focused: "my-custom-focus-label",
@@ -772,7 +663,7 @@ function EditPerfilP() {
                       value={values.direccion || ""}
                       sx={{
                         m: 0,
-                        marginTop: "12%",
+                        marginTop: "10%",
                         marginLeft: "2%",
                         width: "85%",
                         height: "15%",
@@ -781,6 +672,7 @@ function EditPerfilP() {
                     />
                     <TextField
                       label="Teléfono móvil"
+                      size="small"
                       id="outlined-start-adornment"
                       InputLabelProps={{
                         classes: {
@@ -806,6 +698,7 @@ function EditPerfilP() {
                     />
                     <TextField
                       label="Teléfono fíjo"
+                      size="small"
                       id="outlined-start-adornment"
                       InputLabelProps={{
                         classes: {
@@ -833,30 +726,10 @@ function EditPerfilP() {
                       style={{
                         display: "flex",
                         justifyContent: "flex-end",
-                        width: "100%",
+                        width: "87%",
                         marginTop: "10%",
                       }}
-                    >
-                      <Button
-                        variant="contained"
-                        type="submit"
-                        //onClick={() => setOpenPopup(true)}
-                        sx={{
-                          width: "60%",
-                          color: "biomedical.white",
-                          backgroundColor: "biomedical.blue",
-                          fontSize: "14px",
-                          margin: 0,
-
-                          ":hover": {
-                            bgcolor: "biomedical3.blue", // theme.palette.primary.main
-                            color: "white",
-                          },
-                        }}
-                      >
-                        Confirmar cambios
-                      </Button>
-                    </div>
+                    ></div>
 
                     <Popup
                       openPopup={openPopup}
@@ -893,7 +766,6 @@ function EditPerfilP() {
                         </Button>
                         <Button
                           variant="contained"
-                          //type="submit"
                           form="form-registro-p"
                           onClick={() =>
                             handleUpdateUser(usuario.usuario_id, userChanged)
@@ -906,63 +778,7 @@ function EditPerfilP() {
                             margin: 0,
 
                             ":hover": {
-                              bgcolor: "biomedical3.blue", // theme.palette.primary.main
-                              color: "white",
-                            },
-                          }}
-                        >
-                          Confirmar
-                        </Button>
-                      </div>
-                    </Popup>
-                    <Popup
-                      openPopup={openPopup1}
-                      setOpenPopup={setOpenPopup1}
-                      width="sm"
-                      titulo="Eliminar perfil personal permanentemente"
-                    >
-                      <div className="pop-div1">
-                        ¿Estas seguro de que quieres eliminar tu cuenta?
-                      </div>
-                      <div className="pop-div2">
-                        Ya no podras ingresar a tu espacio para agendamiento de
-                        citas pero tus datos seran guardados en caso de que sea
-                        necesario consultar tu actividad en Biomedical Group en
-                        un futuro.
-                      </div>
-                      <div className="botones-popup-reg">
-                        <Button
-                          variant="outlined"
-                          onClick={() => setOpenPopup1(false)}
-                          sx={{
-                            width: "20%",
-                            border: 2,
-                            color: "biomedical.blue",
-                            backgroundColor: "biomedical.white",
-                            borderColor: "bioimedical.blue",
-                            fontSize: "14px",
-                            margin: 0,
-                            ":hover": {
-                              border: 2,
-                              borderColor: "biomedical2.blue",
-                            },
-                          }}
-                        >
-                          Cancelar
-                        </Button>
-                        <Button
-                          variant="contained"
-                          type="submit"
-                          form="form-registro-p"
-                          sx={{
-                            width: "20%",
-                            color: "biomedical.white",
-                            backgroundColor: "biomedical.blue",
-                            fontSize: "14px",
-                            margin: 0,
-
-                            ":hover": {
-                              bgcolor: "biomedical3.blue", // theme.palette.primary.main
+                              bgcolor: "biomedical3.blue",
                               color: "white",
                             },
                           }}

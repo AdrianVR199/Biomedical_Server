@@ -3,10 +3,8 @@ import React, { useEffect, useState } from "react";
 import { Formik, Form } from "formik";
 import { Box, TextField, Button } from "@mui/material";
 import Popup from "./Popup";
-import { DatePicker } from "@mui/x-date-pickers";
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/ContextProvider";
-import MedicoPerfil from "../Paginas/MedicoPerfil";
 import imgprofile from "../assets/Recurso 1@4x-100.jpg";
 
 function MedicoPerfilCont() {
@@ -20,8 +18,6 @@ function MedicoPerfilCont() {
     const getuserinfo = async () => {
       const uinfo = await getUsuarioinfo();
       setUsuario(uinfo.data);
-      console.log(usuario, "dddddd");
-     
     };
     getuserinfo();
   }, []);
@@ -32,27 +28,31 @@ function MedicoPerfilCont() {
         <div style={{ width: "12%" }}>
           <img className="P-img-perfil" src={imgprofile} alt="" />
         </div>
-        <div style={{ width: "68%" }}>
+        <div style={{ width: "57%" }}>
           <h1 style={{ fontSize: "20px" }}>Detalles de mi perfil</h1>
-          <p style={{ fontSize: "16px" }}>
+          <p style={{ fontSize: "15px" }}>
             En este apartado puedes observar tus datos personales y
             actualizarlos en cualquier momento.
           </p>
         </div>
         <div
           style={{
-            width: "20%",
+            width: "27%",
             display: "flex",
             justifyContent: "flex-end",
             alignItems: "flex-end",
           }}
         >
-          {/* <Button
+          <Button
             variant="contained"
-            onClick={() => setOpenPopup1(true)}
-            form="form-registro-p"
+            onClick={() => {
+              if (usuario.id_tipo_usuario === 2) {
+                navigate("/editarmedico/perfil");
+              } else if (usuario.id_tipo_usuario === 3) {
+                navigate("/editarrecepcionista/perfil");
+              }
+            }}
             sx={{
-              height: "50%",
               width: "60%",
               color: "biomedical.white",
               backgroundColor: "biomedical.blue",
@@ -60,13 +60,13 @@ function MedicoPerfilCont() {
               margin: 0,
 
               ":hover": {
-                bgcolor: "biomedical3.blue", // theme.palette.primary.main
+                bgcolor: "biomedical3.blue",
                 color: "white",
               },
             }}
           >
-            Eliminar perfil
-          </Button> */}
+            Editar perfil
+          </Button>
         </div>
       </div>
       <div className="P-titulos-reg">
@@ -94,9 +94,7 @@ function MedicoPerfilCont() {
             movil: "",
             fijo: "",
           }}
-          onSubmit={(values) => {
-            console.log(values);
-          }}
+          onSubmit={(values) => {}}
         >
           {({ handleChange, handleSubmit }) => (
             <Form onSubmit={handleSubmit} id="P-form-registro-p">
@@ -106,7 +104,8 @@ function MedicoPerfilCont() {
                     <TextField
                       disabled
                       name="nombre"
-                      label="nombre completo"
+                      size="small"
+                      label="Nombre completo"
                       id="outlined-start-adornment"
                       value={usuario.nombre_completo || ""}
                       onChange={handleChange}
@@ -131,7 +130,8 @@ function MedicoPerfilCont() {
                     />
                     <TextField
                       disabled
-                      label="correo electronico"
+                      label="Correo electrónico"
+                      size="small"
                       name="correo"
                       id="outlined-start-adornment"
                       onChange={handleChange}
@@ -156,7 +156,8 @@ function MedicoPerfilCont() {
                       focused
                     />
                     <TextField
-                      label="Tipo id"
+                      label="Tipo ID"
+                      size="small"
                       disabled
                       name="tipo_id"
                       id="outlined-start-adornment"
@@ -176,7 +177,7 @@ function MedicoPerfilCont() {
                         m: 0,
                         marginTop: "10%",
                         marginLeft: "2%",
-                        width: "25%",
+                        width: "30%",
                         height: "15%",
                       }}
                       focused
@@ -185,6 +186,7 @@ function MedicoPerfilCont() {
                     <TextField
                       label="Número identificación"
                       disabled
+                      size="small"
                       name="num_id"
                       id="outlined-start-adornment"
                       onChange={handleChange}
@@ -203,7 +205,7 @@ function MedicoPerfilCont() {
                         m: 0,
                         marginTop: "10%",
                         marginLeft: "2%",
-                        width: "45%",
+                        width: "57%",
                         height: "15%",
                       }}
                       variant="outlined"
@@ -212,6 +214,7 @@ function MedicoPerfilCont() {
 
                     <TextField
                       label="Fecha de nacimiento"
+                      size="small"
                       disabled
                       id="outlined-start-adornment"
                       name="fecha_nac"
@@ -239,6 +242,7 @@ function MedicoPerfilCont() {
                     <TextField
                       label="Género"
                       name="genero"
+                      size="small"
                       disabled
                       id="outlined-start-adornment"
                       onChange={handleChange}
@@ -257,7 +261,7 @@ function MedicoPerfilCont() {
                         m: 0,
                         marginTop: "10%",
                         marginLeft: "2%",
-                        width: "43%",
+                        width: "44%",
                         height: "15%",
                       }}
                       focused
@@ -271,9 +275,10 @@ function MedicoPerfilCont() {
                     <TextField
                       label="Nacionaclidad"
                       disabled
+                      size="small"
                       id="outlined-start-adornment"
                       onChange={handleChange}
-                      value={"usuario.nacionalidad" || ""}
+                      value={usuario.nacionalidad || ""}
                       InputLabelProps={{
                         classes: {
                           focused: "my-custom-focus-label",
@@ -297,9 +302,10 @@ function MedicoPerfilCont() {
                     <TextField
                       label="País de nacimiento"
                       disabled
+                      size="small"
                       id="outlined-start-adornment"
                       onChange={handleChange}
-                      value={"pais" || ""}
+                      value={usuario.pais_nac || ""}
                       InputLabelProps={{
                         classes: {
                           focused: "my-custom-focus-label",
@@ -325,8 +331,9 @@ function MedicoPerfilCont() {
                     <TextField
                       label="Departamento de nacimiento"
                       disabled
+                      size="small"
                       onChange={handleChange}
-                      value={"depa" || ""}
+                      value={usuario.dep_nac || ""}
                       id="outlined-start-adornment"
                       InputLabelProps={{
                         classes: {
@@ -351,8 +358,9 @@ function MedicoPerfilCont() {
                     <TextField
                       label="Ciudad de nacimiento"
                       disabled
+                      size="small"
                       onChange={handleChange}
-                      value={usuario.id_ciudad_nac || ""}
+                      value={usuario.ciudad_nac || ""}
                       id="outlined-start-adornment"
                       InputLabelProps={{
                         classes: {
@@ -377,8 +385,9 @@ function MedicoPerfilCont() {
                     <TextField
                       label="País de residencia"
                       disabled
+                      size="small"
                       onChange={handleChange}
-                      value={"paisre" || ""}
+                      value={usuario.pais_res || ""}
                       id="outlined-start-adornment"
                       InputLabelProps={{
                         classes: {
@@ -403,8 +412,9 @@ function MedicoPerfilCont() {
                     <TextField
                       label="Departamento de residencia"
                       disabled
+                      size="small"
                       onChange={handleChange}
-                      value={"depre" || ""}
+                      value={usuario.depa_res || ""}
                       id="outlined-start-adornment"
                       InputLabelProps={{
                         classes: {
@@ -429,8 +439,9 @@ function MedicoPerfilCont() {
                     <TextField
                       label="Ciudad de residencia"
                       disabled
+                      size="small"
                       onChange={handleChange}
-                      value={usuario.id_ciudad_resi || ""}
+                      value={usuario.ciudad_res || ""}
                       id="outlined-start-adornment"
                       InputLabelProps={{
                         classes: {
@@ -445,7 +456,7 @@ function MedicoPerfilCont() {
                       name="ciudad_res"
                       sx={{
                         m: 0,
-                        marginTop: "8%",
+                        marginTop: "10%",
                         marginLeft: "2%",
                         width: "45%",
                         height: "15%",
@@ -459,8 +470,9 @@ function MedicoPerfilCont() {
                 <Box sx={{ display: "flex", flexWrap: "wrap", height: "100%" }}>
                   <div>
                     <TextField
-                      label="Direccion de residencia"
+                      label="Dirección de residencia"
                       disabled
+                      size="small"
                       onChange={handleChange}
                       value={usuario.direccion || ""}
                       id="outlined-start-adornment"
@@ -477,7 +489,7 @@ function MedicoPerfilCont() {
                       name="direccion"
                       sx={{
                         m: 0,
-                        marginTop: "12%",
+                        marginTop: "10%",
                         marginLeft: "2%",
                         width: "85%",
                         height: "15%",
@@ -487,6 +499,7 @@ function MedicoPerfilCont() {
                     <TextField
                       label="Teléfono móvil"
                       disabled
+                      size="small"
                       onChange={handleChange}
                       value={usuario.num_tel_celular || ""}
                       id="outlined-start-adornment"
@@ -513,6 +526,7 @@ function MedicoPerfilCont() {
                     <TextField
                       label="Teléfono fíjo"
                       disabled
+                      size="small"
                       onChange={handleChange}
                       value={usuario.num_tel_fijo || ""}
                       id="outlined-start-adornment"
@@ -543,33 +557,7 @@ function MedicoPerfilCont() {
                         width: "87%",
                         marginTop: "10%",
                       }}
-                    >
-                      <Button
-                        variant="contained"
-                        onClick={() => {
-                          if (usuario.id_tipo_usuario === 2) {
-                            navigate("/editarmedico/perfil");
-                          }
-                          else if(usuario.id_tipo_usuario === 3){
-                            navigate("/editarrecepcionista/perfil");
-                          }
-                        }}
-                        sx={{
-                          width: "45%",
-                          color: "biomedical.white",
-                          backgroundColor: "biomedical.blue",
-                          fontSize: "14px",
-                          margin: 0,
-
-                          ":hover": {
-                            bgcolor: "biomedical3.blue", // theme.palette.primary.main
-                            color: "white",
-                          },
-                        }}
-                      >
-                        Editar perfil
-                      </Button>
-                    </div>
+                    ></div>
 
                     <Popup
                       openPopup={openPopup}
@@ -619,7 +607,7 @@ function MedicoPerfilCont() {
                             fontSize: "14px",
                             margin: 0,
                             ":hover": {
-                              bgcolor: "biomedical3.blue", // theme.palette.primary.main
+                              bgcolor: "biomedical3.blue",
                               color: "white",
                             },
                           }}
@@ -639,7 +627,7 @@ function MedicoPerfilCont() {
                             margin: 0,
 
                             ":hover": {
-                              bgcolor: "biomedical3.blue", // theme.palette.primary.main
+                              bgcolor: "biomedical3.blue",
                               color: "white",
                             },
                           }}
@@ -648,62 +636,6 @@ function MedicoPerfilCont() {
                         </Button>
                       </div>
                     </Popup>
-                    {/* <Popup
-                      openPopup={openPopup1}
-                      setOpenPopup={setOpenPopup1}
-                      width="sm"
-                      titulo="Eliminar perfil personal permanentemente"
-                    >
-                      <div className="pop-div1">
-                        ¿Estas seguro de que quieres eliminar tu cuenta?
-                      </div>
-                      <div className="pop-div2">
-                        Ya no podras ingresar a tu espacio para agendamiento de
-                        citas pero tus datos seran guardados en caso de que sea
-                        necesario consultar tu actividad en Biomedical Group en
-                        un futuro.
-                      </div>
-                      <div className="botones-popup-reg">
-                        <Button
-                          variant="outlined"
-                          onClick={() => setOpenPopup1(false)}
-                          sx={{
-                            width: "20%",
-                            border: 2,
-                            color: "biomedical.blue",
-                            backgroundColor: "biomedical.white",
-                            borderColor: "bioimedical.blue",
-                            fontSize: "14px",
-                            margin: 0,
-                            ":hover": {
-                              border: 2,
-                              borderColor: "biomedical2.blue",
-                            },
-                          }}
-                        >
-                          Cancelar
-                        </Button>
-                        <Button
-                          variant="contained"
-                          type="submit"
-                          form="form-registro-p"
-                          sx={{
-                            width: "20%",
-                            color: "biomedical.white",
-                            backgroundColor: "biomedical.blue",
-                            fontSize: "14px",
-                            margin: 0,
-
-                            ":hover": {
-                              bgcolor: "biomedical3.blue", // theme.palette.primary.main
-                              color: "white",
-                            },
-                          }}
-                        >
-                          Confirmar
-                        </Button>
-                      </div>
-                    </Popup> */}
                   </div>
                 </Box>
               </div>

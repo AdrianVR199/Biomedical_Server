@@ -1,5 +1,4 @@
 import express from "express";
-import { Router } from "express";
 import cors from "cors";
 import citasRoutes from "./routes/citas.routes.js";
 import usuariosRoutes from "./routes/usuario.routes.js";
@@ -17,9 +16,8 @@ import { db } from "./keys.js";
 //const index = Router();
 const app = express();
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended:true}))
-app.use(cors({origin:"http://localhost:3000", credentials:true
-}));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 
 app.use(
   session({
@@ -30,7 +28,6 @@ app.use(
   })
 );
 app.use(morgan("dev"));
-//app.use(express.urlencoded({ extended: false }));
 
 app.use(express.json());
 app.use(passport.initialize());
@@ -38,9 +35,6 @@ app.use(passport.session());
 app.use(passportlib);
 
 app.use((req, res, next) => {
-  //app.locals.message = req.flash('message');
-  //app.locals.success = req.flash('success');
-  console.log(req.user, "usuarioxd");
   app.locals.user = req.user;
   next();
 });
@@ -51,6 +45,5 @@ app.use(authRoutes);
 app.use(dataRoutes);
 
 app.use(usuariosRoutes);
-
 
 export default app;

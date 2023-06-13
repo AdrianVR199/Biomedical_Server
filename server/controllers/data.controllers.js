@@ -1,8 +1,6 @@
 import pool from "../db.js";
-import { createBinaryUUID, fromBinaryUUID } from "binary-uuid";
 
 export const getDepartamentos = async (req, res) => {
-  //console.log(fromBinaryUUID(req.user.usuario_id))
   try {
     const [result] = await pool.query("SELECT * FROM departamentos");
     if (result.length === 0) {
@@ -16,7 +14,6 @@ export const getDepartamentos = async (req, res) => {
 };
 
 export const getCiudades = async (req, res) => {
-  //console.log(req)
   try {
     const [result] = await pool.query(
       "SELECT * from ciudades WHERE id_departamento=?",
@@ -31,20 +28,18 @@ export const getCiudades = async (req, res) => {
 };
 
 export const getCorreos = async (req, res) => {
-  //console.log(fromBinaryUUID(req.user.usuario_id))
   try {
-    const{correo}=req.body;
-   // const nn={correo}
+    const { correo } = req.body;
+
     const result = await pool.query(
       "SELECT correo from usuarios WHERE correo=?",
       [correo]
     );
-    console.log(result,"youuuu")
+
     if (result[0].length === 0) {
-      return res.json({ message: "sigue" })
+      return res.json({ message: "sigue" });
     } else {
       return res.json({ message: "ocupado" });
-
     }
   } catch (error) {
     return res.status(500).json({ message: error.message });

@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import "../styles/FormAgenC.css";
+import { format } from "date-fns";
 import Popup from "../Componentes/Popup";
 import { useAppContext } from "../context/ContextProvider";
 
@@ -52,7 +53,7 @@ function EditCita() {
   const [citaid, setcitaid] = useState(""); //id de la cita para la actualizacion de datos
   const [citaToUpdate, setcitaToUpdate] = useState(""); //datos de la cit a actualizar
   const [openPopup, setOpenPopup] = useState(false); //estado de los popup
-
+  const today = new Date();
   //valores de select
   const [value, setValue] = useState(new Date()); //Fecha actual
   const [idValue, setidValue] = useState(""); //tipo de cita
@@ -86,7 +87,11 @@ function EditCita() {
       return objeto[propiedad] === valor;
     });
   }
-
+  const formatFecha = (date) => {
+    const dateObj = new Date(date);
+    const formattedDate = format(dateObj, "yyyy-MM-dd");
+    return formattedDate;
+  };
   //controlador valores select de doctores
   const handleChangeid2 = (event) => {
     let objetoBuscado = buscarObjetoPorPropiedad(
@@ -112,7 +117,6 @@ function EditCita() {
       const response = await UpdateCita(citaI, infoactuali);
 
       navigate("/inicio");
-      console.log(response, "respuesta a la creacion de la cita");
     } catch (error) {
       console.log(error);
     }
@@ -183,10 +187,10 @@ function EditCita() {
   function mostrarHoraConAmPm(hora) {
     const f = hora.slice(0, 2);
     if (f < 12) {
-      const r = `${hora} am`;
+      const r = `${hora.substring(0, 5)} am`;
       return r;
     } else {
-      const r = `${hora} pm`;
+      const r = `${hora.substring(0, 5)} pm`;
       return r;
     }
   }
@@ -218,7 +222,7 @@ function EditCita() {
               >
                 <div style={{ width: "50%" }}>
                   <p style={{ width: "70%", marginBottom: "40px" }}>
-                    1. Selecciona el doctor que te atenderá:
+                    1. Selecciona el médico que te atenderá:
                   </p>
                   <FormControl
                     focused
@@ -228,6 +232,7 @@ function EditCita() {
                   >
                     <Select
                       className="iiiii"
+                      size="small"
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
                       value={idValuedoc}
@@ -259,7 +264,7 @@ function EditCita() {
                 </div>
                 <div style={{ width: "50%" }}>
                   <p style={{ width: "70%", marginBottom: "40px" }}>
-                    4. Seleccion el tipo de cita.
+                    4. Selecciona el tipo de cita:
                   </p>
                   <FormControl
                     focused
@@ -271,6 +276,7 @@ function EditCita() {
                       className="iiiii"
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
+                      size="small"
                       value={idValue}
                       onChange={handleChangeid}
                       sx={{
@@ -301,10 +307,12 @@ function EditCita() {
                 <div style={{ width: "50%" }}>
                   <p style={{ width: "70%", marginBottom: "25px" }}>
                     2. Busca y selecciona la fecha deseada para agendar tu cita
-                    medica.
+                    médica:
                   </p>
                   <DatePicker
                     name="fecha_reg"
+                    slotProps={{ textField: { size: "small" } }}
+                    minDate={today}
                     InputLabelProps={{
                       classes: {
                         focused: "my-custom-focus-label",
@@ -337,11 +345,12 @@ function EditCita() {
                   />
                 </div>
                 <div style={{ width: "50%" }}>
-                  <p>5. Describe el motivo de la consulta.</p>
+                  <p>5. Describe el motivo de la consulta:</p>
                   <TextField
                     name="motivo_consulta"
                     id="outlined-start-adornment"
                     multiline
+                    size="small"
                     rows={3}
                     InputLabelProps={{
                       classes: {
@@ -360,7 +369,7 @@ function EditCita() {
                   />
                 </div>
                 <div style={{ width: "50%" }}>
-                  <p>3. Selecciona el horario para tu cita.</p>
+                  <p>3. Selecciona el horario para tu cita médica:</p>
                   <FormControl
                     focused
                     sx={{
@@ -370,6 +379,7 @@ function EditCita() {
                     <Select
                       value={idValue3}
                       onChange={handleChangeid3}
+                      size="small"
                       sx={{
                         ".MuiOutlinedInput-notchedOutline": {
                           border: 1,
@@ -406,10 +416,10 @@ function EditCita() {
                   <Button
                     variant="contained"
                     type="submit"
-                    onClick={() => setOpenPopup(true)}
                     sx={{
-                      height: "40%",
+                      height: "32%",
                       width: "70%",
+                      marginBottom: "6%",
                       color: "biomedical.white",
                       backgroundColor: "biomedical.blue",
                       fontSize: "16px",
@@ -454,12 +464,12 @@ function EditCita() {
                         <p
                           style={{
                             margin: 0,
-                            marginBottom: "15px",
+                            marginBottom: "10px",
                             marginTop: "15px",
                             fontSize: "14px",
                           }}
                         >
-                          Doctor
+                          Médico
                         </p>
                         <TextField
                           disabled
@@ -485,7 +495,7 @@ function EditCita() {
                         <p
                           style={{
                             margin: 0,
-                            marginBottom: "15px",
+                            marginBottom: "10px",
                             marginTop: "15px",
                             fontSize: "14px",
                           }}
@@ -505,7 +515,7 @@ function EditCita() {
                               focused: "my-custom-focus-class",
                             },
                           }}
-                          value={value}
+                          value={formatFecha(value)}
                           onChange={(newValue) => {
                             setValue(newValue);
                           }}
@@ -519,7 +529,7 @@ function EditCita() {
                         <p
                           style={{
                             margin: 0,
-                            marginBottom: "15px",
+                            marginBottom: "10px",
                             marginTop: "15px",
                             fontSize: "14px",
                           }}
@@ -530,7 +540,7 @@ function EditCita() {
                           disabled
                           name="hora_reg"
                           size="small"
-                          value={idValue3 || ""}
+                          value={mostrarHoraConAmPm(idValue3) || ""}
                           id="outlined-start-adornment"
                           InputLabelProps={{
                             classes: {
@@ -553,7 +563,7 @@ function EditCita() {
                         <p
                           style={{
                             margin: 0,
-                            marginBottom: "15px",
+                            marginBottom: "10px",
                             marginTop: "15px",
                             fontSize: "14px",
                           }}
@@ -585,7 +595,7 @@ function EditCita() {
                         <p
                           style={{
                             margin: 0,
-                            marginBottom: "15px",
+                            marginBottom: "10px",
                             marginTop: "15px",
                             fontSize: "14px",
                           }}
@@ -628,15 +638,26 @@ function EditCita() {
                     <div>
                       <h1 style={{ fontSize: "15px" }}>Recomendaciones</h1>
                       <p style={{ fontSize: "14px" }}>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                        sed do eiusmod tempor incididunt ut labore et dolore
-                        magna aliqua. Ut enim ad minim veniam, quis nostrud
-                        exercitation ullamco laboris nisi ut aliquip ex ea
-                        commodo consequat. Duis aute irure dolor in
-                        reprehenderit in voluptate velit esse cillum dolore eu
-                        fugiat nulla pariatur. Excepteur sint occaecat cupidatat
-                        non proident, sunt in culpa qui officia deserunt mollit
-                        anim id est laborum
+                        Recuerda tener en cuenta las siguientes recomendaciones
+                        generales a tener en cuenta para asistir a tu cita
+                        médica en Biomedical Group : <br />
+                        <br />
+                        1. Prepárate para tu cita: Antes de asistir a tu cita
+                        médica, asegurate de tener a mano toda información
+                        relevante sobre tu situación de salud actual, historial
+                        médico y síntomas.
+                        <br />
+                        <br />
+                        2. Llega con anticipación: Intenta llegar al centro
+                        médico con 20 minutos de anticipación para presentarte
+                        en la recepción y evitar perder tu cita médica.
+                        <br />
+                        <br />
+                        3. Se claro y específico: Durante tu cita médica, ten en
+                        cuenta comunicar correctamente tus síntomas de forma
+                        clara y concisa, proporcionando los detalles suficientes
+                        para la correcta evaluación del médico.
+                        <br />
                       </p>
                     </div>
                     <div className="F-A-botones-popup">

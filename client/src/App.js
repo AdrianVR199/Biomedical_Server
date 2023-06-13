@@ -1,5 +1,4 @@
 import { Routes, Route } from "react-router-dom";
-
 import Citas from "./Paginas/Citas";
 import FormCitas from "./Paginas/FormCitas";
 import NotFoudPage from "./Paginas/NotFoudPage";
@@ -18,11 +17,10 @@ import PacientePerfil from "./Paginas/PacientePerfil";
 import EditarPacientePerfil from "./Paginas/EditarPacientePerfil";
 import EditarCitaPage from "./Paginas/EditarCitaPage";
 import PacienteV from "./Paginas/PacienteV";
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { CerrarSesionRequest } from "./api/routes.api";
 import { AppContextProvider } from "./context/ContextProvider";
-import { useState } from "react";
+import { es } from "date-fns/locale";
 const theme = createTheme({
   palette: {
     primary1: {
@@ -57,21 +55,16 @@ const theme = createTheme({
 
 function App() {
   return (
-    <LocalizationProvider dateAdapter={AdapterDateFns}>
+    <LocalizationProvider adapterLocale={es} dateAdapter={AdapterDateFns}>
       <>
         <ThemeProvider theme={theme}>
           <AppContextProvider>
-            <button
-              onClick={CerrarSesionRequest}
-              style={{ width: "100px" }}
-            ></button>
             <Routes>
-              {/* <Route path="/" element={<Top />}/> */}
               <Route path="/registro" element={<RegistroForm />} />
               <Route path="/signup" element={<SignupPage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route index element={<LoginPage />} />
-              {/* <Route path="/inicio" element={<Inicio />} /> */}
+
               <Route element={<ProtectedRoute />}>
                 <Route path="/inicio" element={<Inicio />} />
                 <Route path="/citas" element={<Citas />} />
@@ -96,8 +89,14 @@ function App() {
               </Route>
               <Route element={<ProtectedRoute2 />}>
                 <Route path="/Calendariocitas" element={<CalendarioCitas />} />
-                <Route path="/ListadoPacientesBiomedical" element={<PacientesList />} />
-                <Route path="/recepcionista/perfil" element={<MedicoPerfil />} />
+                <Route
+                  path="/ListadoPacientesBiomedical"
+                  element={<PacientesList />}
+                />
+                <Route
+                  path="/recepcionista/perfil"
+                  element={<MedicoPerfil />}
+                />
                 <Route path="/Perfilpaciente/:id" element={<PacienteV />} />
                 <Route
                   path="/editarrecepcionista/perfil"
