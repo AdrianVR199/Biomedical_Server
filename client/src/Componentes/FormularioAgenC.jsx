@@ -81,7 +81,7 @@ function FormularioAgenC() {
   const handleCreateCita = async (citaI) => {
     try {
       const response = await createCita(citaI);
-
+      console.log(response)
       navigate("/inicio");
     } catch (error) {
       console.log(error);
@@ -145,12 +145,7 @@ function FormularioAgenC() {
     return formattedDate;
   };
 
-  const validationSchema = Yup.object().shape({
-    id_doctor: Yup.string().required("Campo requerido"),
-    fecha_reg: Yup.string().required("Campo requerido"),
-    hora_reg: Yup.string().required("Campo requerido"),
-    tipo_cita: Yup.date().required("Campo requerido"),
-  });
+
 
   return (
     <div>
@@ -163,7 +158,7 @@ function FormularioAgenC() {
           estado_asistencia: 1,
           motivo_consulta: "",
         }}
-        validationSchema={validationSchema}
+       
         onSubmit={(values) => {
           values.fecha_reg = formatDate(value);
           values.tipo_cita = idValue;
@@ -204,7 +199,7 @@ function FormularioAgenC() {
                     <Select
                       className="iiiii"
                       size="small"
-                      name="id_doctor"
+                      
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
                  

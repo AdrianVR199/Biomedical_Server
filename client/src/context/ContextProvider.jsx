@@ -49,7 +49,7 @@ export const AppContextProvider = ({ children }) => {
   const LoginUser = async (user) => {
     try {
       const response = await loginUserRequest(user);
-
+      console.log(response)
       return response;
     } catch (error) {
       console.log(error);
