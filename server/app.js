@@ -15,6 +15,8 @@ import { db } from "./keys.js";
 
 //const index = Router();
 const app = express();
+app.use(passportlib);
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors({ origin: "http://localhost:3000", credentials: true }));
@@ -40,7 +42,6 @@ app.use(dataRoutes);
 
 app.use(usuariosRoutes);
 
-app.use(passportlib);
 
 app.use((req, res, next) => {
   app.locals.user = req.user;
