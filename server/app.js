@@ -32,6 +32,14 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.use(citasRoutes);
+app.use(historialRoutes);
+app.use(authRoutes);
+app.use(dataRoutes);
+
+app.use(usuariosRoutes);
+
 app.use(passportlib);
 
 app.use((req, res, next) => {
@@ -40,11 +48,6 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(citasRoutes);
-app.use(historialRoutes);
-app.use(authRoutes);
-app.use(dataRoutes);
 
-app.use(usuariosRoutes);
 
 export default app;
