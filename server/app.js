@@ -26,6 +26,9 @@ app.use(
     secret: "biomedicalnodesession",
     resave: false,
     saveUninitialized: false,
+    cookie: {
+      secure: true,
+    },
     store: new MySQLStore(db.database),
   })
 );
@@ -42,13 +45,10 @@ app.use(dataRoutes);
 
 app.use(usuariosRoutes);
 
-
 app.use((req, res, next) => {
   app.locals.user = req.user;
-  console.log(req.user, "usuario")
+  console.log(req.user, "usuario");
   next();
 });
-
-
 
 export default app;
