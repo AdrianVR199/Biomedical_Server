@@ -36,6 +36,7 @@ app.use(passportlib);
 
 app.use((req, res, next) => {
   app.locals.user = req.user;
+  console.log(req.user, "usuario")
   next();
 });
 
