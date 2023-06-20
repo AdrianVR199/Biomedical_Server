@@ -15,8 +15,6 @@ import { db } from "./keys.js";
 
 //const index = Router();
 const app = express();
-app.use(passportlib);
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors({ origin: "http://localhost:3000", credentials: true }));
@@ -26,7 +24,6 @@ app.use(
     secret: "biomedicalnodesession",
     resave: false,
     saveUninitialized: false,
-
     store: new MySQLStore(db.database),
   })
 );
@@ -35,18 +32,21 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(passportlib);
+
+app.use(authRoutes);
+
+app.use((req, res, next) => {
+  console.log(req.user, "aaaaaaaaa")
+  app.locals.user = req.user;
+  next();
+});
 
 app.use(citasRoutes);
 app.use(historialRoutes);
-app.use(authRoutes);
 app.use(dataRoutes);
 
 app.use(usuariosRoutes);
 
-app.use((req, res, next) => {
-  app.locals.user = req.user;
-  console.log(req.user, "usuario");
-  next();
-});
 
 export default app;
