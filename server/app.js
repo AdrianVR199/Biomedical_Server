@@ -25,6 +25,11 @@ app.use(
     resave: false,
     saveUninitialized: false,
     store: new MySQLStore(db.database),
+    cookie: {
+      secure: true, // Si estás usando HTTPS, establece esta opción en true; de lo contrario, déjala en false
+      maxAge: 24 * 60 * 60 * 1000, // Tiempo de vida de la cookie en milisegundos (aquí se establece a 24 horas)
+      // Aquí puedes configurar otras opciones de cookie, como el dominio, la ruta, etc.
+    },
   })
 );
 app.use(morgan("dev"));
