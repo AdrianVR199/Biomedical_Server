@@ -137,7 +137,7 @@ passport.use(
 );
 
 passport.serializeUser((user, done) => {
-  console.log(user, "usuario serialize");
+  console.log(user, user.usuario_id, "usuario serialize");
   process.nextTick(function() {
     done(null, user.usuario_id);
   });
