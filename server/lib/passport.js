@@ -139,7 +139,7 @@ passport.use(
 passport.serializeUser((user, done) => {
   console.log(user, "usuario serialize");
   process.nextTick(function() {
-    done(null, { id: user.id, username: user.username });
+    done(null, user.usuario_id);
   });
 });
 
