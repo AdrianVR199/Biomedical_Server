@@ -17,7 +17,7 @@ import { db } from "./keys.js";
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+app.use(cors({ origin: "https://main.dtdfwnkc3ejv6.amplifyapp.com", credentials: true }));
 
 app.use(
   session({
