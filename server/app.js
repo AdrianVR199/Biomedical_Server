@@ -6,6 +6,7 @@ import historialRoutes from "./routes/historiales.routes.js";
 import dataRoutes from "./routes/data.routes.js";
 import authRoutes from "./routes/auth.routes.js";
 import passport from "passport";
+import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import passportlib from "./lib/passport.js";
 import morgan from "morgan";
