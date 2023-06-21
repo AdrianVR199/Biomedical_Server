@@ -45,7 +45,6 @@ app.use((req, res, next) => {
 app.use(citasRoutes);
 app.use(historialRoutes);
 app.use(dataRoutes);
-
 app.use(usuariosRoutes);
 
 
