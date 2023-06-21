@@ -24,6 +24,7 @@ router.post("/auth/signin", (req, res, next) => {
       req.logIn(user, (err) => {
         if (err) throw err;
         res.send(user);
+        console.log(req,"usuario")
       });
     }
   })(req, res, next);
