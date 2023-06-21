@@ -136,14 +136,14 @@ passport.use(
   )
 );
 
-passport.serializeUser((user, cb) => {
+passport.serializeUser((user, done) => {
   console.log(user, "usuario serialize");
   process.nextTick(function() {
-    cb(null, { id: user.id, username: user.username });
+    done(null, { id: user.id, username: user.username });
   });
 });
 
-passport.deserializeUser(  (usuario_id, cb)=> {
+passport.deserializeUser(  (usuario_id, done)=> {
   process.nextTick(async function() {
     try {
       console.log(usuario_id, "usuario deseserialize");
@@ -157,9 +157,9 @@ passport.deserializeUser(  (usuario_id, cb)=> {
       const row = rows[0];
       const row1 = row[0];
       console.log(row, row1, "consultas");
-      cb(null, row1);
+      done(null, row1);
     } catch (err) {
-      cb(err);
+      done(err);
     }
   });
  
