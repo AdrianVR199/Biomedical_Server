@@ -8,7 +8,7 @@ export const auth = {
             return next();
         }
         console.log("no autorizado")
-        return res.redirect('/signin');
+        return next();
     }
 };
 export default router;
