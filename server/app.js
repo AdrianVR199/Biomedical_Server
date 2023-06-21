@@ -17,7 +17,7 @@ import { db } from "./keys.js";
 //const index = Router();
 const app = express();
 app.use(bodyParser.json());
-app.use(cookieParser());
+app.use(cookieParser("biomedicalnodesession"));
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 
@@ -28,6 +28,7 @@ app.use(
     saveUninitialized: false,
     store: new MySQLStore(db.database),
     cookie: {
+      
       secure: true, // Si estás usando HTTPS, establece esta opción en true; de lo contrario, déjala en false
       maxAge: 24 * 60 * 60 * 1000, // Tiempo de vida de la cookie en milisegundos (aquí se establece a 24 horas)
       // Aquí puedes configurar otras opciones de cookie, como el dominio, la ruta, etc.
