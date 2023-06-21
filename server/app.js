@@ -34,16 +34,18 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(passportlib);
 
+app.use(authRoutes);
+
 app.use((req, res, next) => {
+  console.log(req.user, "aaaaaaaaa")
   app.locals.user = req.user;
   next();
 });
 
 app.use(citasRoutes);
 app.use(historialRoutes);
-app.use(authRoutes);
 app.use(dataRoutes);
-
 app.use(usuariosRoutes);
+
 
 export default app;
