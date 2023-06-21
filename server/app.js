@@ -24,11 +24,7 @@ app.use(
     secret: "biomedicalnodesession",
     resave: false,
     saveUninitialized: false,
-    store: new MySQLStore(db.database),
-    cookie:{
-      secure:true,
-      sameSite:"none"
-    }
+    store: new MySQLStore(db.database)
   })
 );
 app.use(morgan("dev"));
