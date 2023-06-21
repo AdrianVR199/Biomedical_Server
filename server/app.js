@@ -26,9 +26,10 @@ app.use(
     saveUninitialized: false,
     store: new MySQLStore(db.database),
     cookie: {
-      secure: false, // Si estás usando HTTPS, establece esta opción en true; de lo contrario, déjala en false
+      secure: true, // Si estás usando HTTPS, establece esta opción en true; de lo contrario, déjala en false
       maxAge: 24 * 60 * 60 * 1000, // Tiempo de vida de la cookie en milisegundos (aquí se establece a 24 horas)
       // Aquí puedes configurar otras opciones de cookie, como el dominio, la ruta, etc.
+      sameSite:"lax"
     },
   })
 );
@@ -40,17 +41,17 @@ app.use(passport.session());
 app.use(passportlib);
 
 
-
+app.use((req, res, next) => {
+  console.log(req.user, "aaaaaaaaa")
+  app.locals.user = req.user;
+  next();
+});
 app.use(authRoutes);
 
 app.use(citasRoutes);
 app.use(historialRoutes);
 app.use(dataRoutes);
 app.use(usuariosRoutes);
-app.use((req, res, next) => {
-  console.log(req.user, "aaaaaaaaa")
-  app.locals.user = req.user;
-  next();
-});
+
 
 export default app;
