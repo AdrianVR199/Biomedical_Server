@@ -34,7 +34,8 @@ app.use(
     saveUninitialized: false,
     store: new MySQLStore(db.database),
     cookie:{
-      sameSite:"none"
+      sameSite:"none",
+      secure:true
     }
   })
 );
