@@ -17,18 +17,25 @@ import { db } from "./keys.js";
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cors({ 
-  origin: "http://localhost:3000",
-  methods: 'GET, POST, PUT, DELETE',
-  allowedHeaders: 'Content-Type, Authorization',
-   credentials: true }));
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    methods: "GET, POST, PUT, DELETE",
+    allowedHeaders: "Content-Type, Authorization",
+    credentials: true,
+    
+  })
+);
 
 app.use(
   session({
     secret: "biomedicalnodesession",
     resave: false,
     saveUninitialized: false,
-    store: new MySQLStore(db.database)
+    store: new MySQLStore(db.database),
+    cookie:{
+      sameSite:"none"
+    }
   })
 );
 app.use(morgan("dev"));
