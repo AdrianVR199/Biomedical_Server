@@ -29,7 +29,7 @@ passport.use(
           user.contraseña
         );
         if (validPassword) {
-          user.usuario_id = fromBinaryUUID(user.usuario_id);
+          //user.usuario_id = fromBinaryUUID(user.usuario_id);
 
           done(null, user);
           console.log(user, "usuario login");
