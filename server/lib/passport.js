@@ -143,7 +143,7 @@ passport.serializeUser((user, done) => {
   });
 });
 
-passport.deserializeUser( async (usuario_id, done)=> {
+passport.deserializeUser( (usuario_id, done)=> {
   process.nextTick( async function() {
     try {
       console.log(usuario_id, "usuario deseserialize");
