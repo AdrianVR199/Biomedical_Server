@@ -30,6 +30,10 @@ app.use(
     resave: false,
     saveUninitialized: false,
     store: new MySQLStore(db.database),
+    cookie:{
+      sameSite:"none",
+      secure:true
+    }
   })
 );
 app.use(morgan("dev"));
