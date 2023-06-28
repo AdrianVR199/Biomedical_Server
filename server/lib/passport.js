@@ -127,9 +127,9 @@ passport.use(
             newUser.correo,
           ]);
           const userextract1 = rows2[0];
-        const userr = userextract1[0];
-          console.log(rows2,userr, "usuario traido signup")
-          return done(null, newUser);
+        const user = userextract1[0];
+          console.log(rows2,user, "usuario traido signup")
+          return done(null, user);
         } catch (err) {
           return done(null, false, {
             message: "Hay datos obligatorios que faltan",
