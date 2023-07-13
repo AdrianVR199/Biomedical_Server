@@ -12,8 +12,10 @@ import morgan from "morgan";
 import session from "express-session";
 import MySQLStore from "express-mysql-session";
 import { db } from "./keys.js";
+import fs from "fs"
 
 //const index = Router();
+const file = fs.readFileSync('./8CE71567C23CF4B61C412616C1775A5A.txt')
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -54,5 +56,9 @@ app.use(authRoutes);
 app.use(dataRoutes);
 
 app.use(usuariosRoutes);
+
+app.get('/.well-known/pki-validation/8CE71567C23CF4B61C412616C1775A5A.txt'), (req,res)=>{
+  res.sendFile("Biomedical_Server/8CE71567C23CF4B61C412616C1775A5A.txt")
+}
 
 export default app;
