@@ -17,10 +17,6 @@ router.get("/citascompletas",auth.isLoggedIn, getCitasC);
 
 router.get("/citas/:id",auth.isLoggedIn, getCita);
 
-router.get('/.well-known/pki-validation/8CE71567C23CF4B61C412616C1775A5A.txt'), (req,res)=>{
-  res.sendFile('/home/ubuntu/project/Biomedical_Server/8CE71567C23CF4B61C412616C1775A5A.txt')
-}
-
 router.post("/horarios",auth.isLoggedIn, getHorasCitas);
 
 router.post("/citas",auth.isLoggedIn, createCita);
