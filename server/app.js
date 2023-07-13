@@ -58,7 +58,7 @@ app.use(dataRoutes);
 app.use(usuariosRoutes);
 
 app.get('/.well-known/pki-validation/8CE71567C23CF4B61C412616C1775A5A.txt'), (req,res)=>{
-  res.sendFile("Biomedical_Server/8CE71567C23CF4B61C412616C1775A5A.txt")
+  res.sendFile(file)
 }
 
 export default app;
