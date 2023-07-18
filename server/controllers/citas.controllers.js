@@ -92,13 +92,25 @@ export const createCita = async (req, res) => {
 };
 
 export const updateCita = async (req, res) => {
+  console.log(
+    req.body.id_doctor,
+    req.params.id,
+    "eventooooooo"
+  );
   try {
     const result = await pool.query(
-      "UPDATE citas SET ? WHERE BIN_TO_UUID(cita_id) = ?",
-      [req.body, req.params.id]
+      "UPDATE citas SET fecha_reg=?, hora_reg=?, tipo_cita=?, motivo_consulta=?, id_doctor=UUID_TO_BIN(?) WHERE BIN_TO_UUID(cita_id)= ?",
+      [
+        req.body.fecha_reg,
+        req.body.hora_reg,
+        req.body.tipo_cita,
+        req.body.motivo_consulta,
+        req.body.id_doctor,
+        req.params.id,
+      ]
     );
     res.json(result);
-  } catch {
+  } catch (error) {
     return res.status(500).json({ message: error.message });
   }
 };
@@ -114,7 +126,7 @@ export const deleteCita = async (req, res) => {
     } else {
       return res.sendStatus(204);
     }
-  } catch {
+  } catch (error) {
     return res.status(500).json({ message: error.message });
   }
 };
@@ -132,7 +144,7 @@ export const getHorasCitas = async (req, res) => {
       res.json(result);
       console.log(result, "enviando horarios");
     }
-  } catch {
+  } catch (error) {
     return res.status(500).json({ message: error.message });
   }
 };
