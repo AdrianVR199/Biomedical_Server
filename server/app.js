@@ -18,7 +18,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin:'https://main.d16e00tpmltt32.amplifyapp.com',
+    origin:'https://main.d16fqn5xtlzqnp.amplifyapp.com',
     credentials: true,
   })
 );
