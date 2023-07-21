@@ -92,11 +92,6 @@ export const createCita = async (req, res) => {
 };
 
 export const updateCita = async (req, res) => {
-  console.log(
-    req.body.id_doctor,
-    req.params.id,
-    "eventooooooo"
-  );
   try {
     const result = await pool.query(
       "UPDATE citas SET fecha_reg=?, hora_reg=?, tipo_cita=?, motivo_consulta=?, id_doctor=UUID_TO_BIN(?) WHERE BIN_TO_UUID(cita_id)= ?",
