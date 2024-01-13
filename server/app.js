@@ -54,8 +54,8 @@ app.use(dataRoutes);
 
 app.use(usuariosRoutes);
 
-// app.get('/.well-known/pki-validation/8CE71567C23CF4B61C412616C1775A5A.txt', (req,res)=>{
-//   res.sendFile('/home/ubuntu/project/Biomedical_Server/8CE71567C23CF4B61C412616C1775A5A.txt')
-// })
+app.get('/.well-known/pki-validation/270BB314743D99A68C9CA0B27F4ACBEB.txt', (req,res)=>{
+  res.sendFile('/home/ubuntu/projects/Biomedical_Server/270BB314743D99A68C9CA0B27F4ACBEB.txt')
+})
 
 export default app;
